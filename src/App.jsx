@@ -15,9 +15,9 @@ function App() {
                     <Route
                         path="..."
                         element={
-                            <ProtectedRoute>
+                            <RoleProtectedRoute allowedRoles={[]}>
                                 {/* protected component here */}
-                            </ProtectedRoute>
+                            </RoleProtectedRoute>
                         }
                     />
                 </Routes>
