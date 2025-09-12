@@ -1,0 +1,119 @@
+/* ==========================================================================
+  1. Variáveis Globais e Configurações Base
+  ========================================================================== */
+:root {
+  /* Paleta de Cores Inspirada na Logo do Museu Magma */
+  /* */
+  --color-background: #2a2a2a;      /* Um cinza escuro, quase preto */
+  --color-background-light: #3c3c3c; /* Um cinza um pouco mais claro para painéis */
+  --color-text: #f0e9e0;             /* Um branco-osso para texto geral */
+  --color-primary: #e57a44;          /* Laranja queimado/Terracota da logo */
+  --color-accent: #f4b860;           /* Amarelo/Dourado do centro da logo */
+  --color-border: #505050;           /* Cor para bordas sutis */
+  --color-success: #5cb85c;
+  --color-error: #d9534f;
+
+  /* Tipografia */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Esquema de Cores e Fundo */
+  color-scheme: dark;
+  color: var(--color-text);
+  background-color: var(--color-background);
+
+  /* Melhoras de Renderização de Fonte */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+  2. Resets e Estilos Globais do Body
+  ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* ==========================================================================
+  3. Estilos de Elementos Comuns
+  ========================================================================== */
+a {
+  font-weight: 500;
+  color: var(--color-primary);
+  text-decoration: none; /* Removemos o sublinhado padrão */
+  transition: color 0.2s ease-in-out;
+}
+a:hover {
+  color: var(--color-accent);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--color-text);
+  background-color: var(--color-primary); /* Cor primária como fundo */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+button:hover {
+  filter: brightness(1.1); /* Efeito de brilho ao passar o mouse */
+  transform: translateY(-2px);
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto var(--color-accent);
+  outline-offset: 2px;
+}
+button:disabled {
+  background-color: var(--color-border);
+  cursor: not-allowed;
+}
+
+
+/* ==========================================================================
+  4. Estilos para Formulários (Muito importante para seu projeto)
+  ========================================================================== */
+input, textarea, select {
+  width: 100%;
+  padding: 0.8em 1em;
+  font-family: inherit;
+  font-size: 1em;
+  color: var(--color-text);
+  background-color: var(--color-background-light);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(229, 122, 68, 0.2);
+}
+
+/* ==========================================================================
+  5. Classes Utilitárias (Opcional, mas útil)
+  ========================================================================== */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
