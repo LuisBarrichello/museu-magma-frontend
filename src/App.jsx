@@ -1,8 +1,16 @@
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from '../context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
+
+import MainLayout from './components/layout/MainLayout';
+import RoleProtectedRoute from './components/RoleProtectedRoute';
+
+import LoginPage from './pages/LoginPages/LoginPage';
+import DashboardPage from './pages/DashboardPage/DashboardPage';
+import ProductsPage from './pages/ProductsPage/ProductsPage';
+import SalesPage from './pages/SalesPage/SalesPage';
+import UsersPage from './pages/UsersPage/UsersPage';
+import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
 
 function App() {
     return (
@@ -10,16 +18,58 @@ function App() {
             <AuthProvider>
                 <Routes>
                     {/* Public Route */}
-                    
-                    {/* Protected Routes */}
+                    <Route path="/login" element={<LoginPage />} />
                     <Route
-                        path="..."
-                        element={
-                            <RoleProtectedRoute allowedRoles={[]}>
-                                {/* protected component here */}
-                            </RoleProtectedRoute>
-                        }
+                        path="/unauthorized"
+                        element={<UnauthorizedPage />}
                     />
+
+                    {/* Protected Routes */}
+
+                    <Route element={<MainLayout />}>
+                        <Route
+                            element={
+                                <RoleProtectedRoute
+                                    allowedRoles={[
+                                        'ADMIN',
+                                        'SELLER',
+                                        'STOCKCLERK',
+                                    ]}
+                                />
+                            }>
+                            <Route
+                                path="/dashboard"
+                                element={<DashboardPage />}
+                            />
+                        </Route>
+                        <Route
+                            element={
+                                <RoleProtectedRoute
+                                    allowedRoles={['ADMIN', 'STOCKCLERK']}
+                                />
+                            }>
+                            <Route
+                                path="/products"
+                                element={<ProductsPage />}
+                            />
+                        </Route>
+                        <Route
+                            element={
+                                <RoleProtectedRoute
+                                    allowedRoles={['ADMIN', 'SELLER']}
+                                />
+                            }>
+                            <Route path="/sales" element={<SalesPage />} />
+                        </Route>
+                        <Route
+                            element={
+                                <RoleProtectedRoute allowedRoles={['ADMIN']} />
+                            }>
+                            <Route path="/users" element={<UsersPage />} />
+                        </Route>
+                    </Route>
+
+                    <Route path="/" element={<LoginPage />} />
                 </Routes>
             </AuthProvider>
         </Router>
