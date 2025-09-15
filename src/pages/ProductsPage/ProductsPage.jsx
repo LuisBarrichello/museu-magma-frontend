@@ -94,7 +94,7 @@ const ProductsPage = () => {
                 {canManageProducts && (
                     <button
                         className="add-product-btn"
-                        onClick={() => setIsModalOpen(true)}>
+                        onClick={handleOpenCreateModal}>
                         + Adicionar Produto
                     </button>
                 )}
