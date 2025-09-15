@@ -1,0 +1,94 @@
+.products-page {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.page-header h1 {
+    margin: 0;
+    color: var(--color-text);
+}
+
+.add-product-btn {
+    font-size: 0.9em;
+}
+
+.products-list-container {
+    background-color: var(--color-background-light);
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow-x: auto; /* Para tabelas em telas pequenas */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+thead {
+    border-bottom: 2px solid var(--color-border);
+}
+
+th {
+    padding: 0.75rem 1rem;
+    color: var(--color-accent);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+}
+
+tbody tr {
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color 0.2s;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-buttons button {
+    padding: 0.4em 0.8em;
+    font-size: 0.85em;
+}
+
+.edit-btn {
+    background-color: var(--color-accent);
+    color: var(--color-background);
+}
+
+.delete-btn {
+    background-color: var(--color-error);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

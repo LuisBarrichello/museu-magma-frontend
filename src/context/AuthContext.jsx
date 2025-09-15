@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
         };
 
         fetchInitialUser();
-    }, [accessToken]);
+    }, []);
 
     const login = async (username, password) => {
         try {
@@ -45,6 +45,15 @@ export const AuthProvider = ({ children }) => {
 
             localStorage.setItem('accessToken', access);
             localStorage.setItem('refreshToken', refresh);
+
+            apiClient.defaults.headers.common[
+                'Authorization'
+            ] = `Bearer ${access}`;
+
+            const decodedToken = jwtDecode(access);
+            const userId = decodedToken.user_id;
+            const userResponse = await apiClient.get(`/users/${userId}/`);
+            setUser(userResponse.data);
 
             setAccessToken(access);
             navigate('/dashboard');
@@ -65,7 +74,7 @@ export const AuthProvider = ({ children }) => {
     const authContextValue = {
         user,
         accessToken,
-        isAuthenticated: !!accessToken,
+        isAuthenticated: !!user,
         loading,
         login,
         logout,
