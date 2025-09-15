@@ -10,30 +10,65 @@ const ProductsPage = () => {
     const [error, setError] = useState(null);
     const { user } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingProduct, setEditingProduct] = useState(null);
+
+    const fetchProducts = async () => {
+        try {
+            setLoading(true);
+            const response = await apiClient.get('/products/');
+            setProducts(response.data.results);
+            setError(null);
+        } catch (error) {
+            setError('Failed to fetch products');
+            console.error('Error fetching products:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                setLoading(true);
-                const response = await apiClient.get('/products/');
-                setProducts(response.data.results);
-                console.log('Fetched products:', response.data.results);
-                setError(null);
-            } catch (error) {
-                setError('Failed to fetch products');
-                console.error('Error fetching products:', error);
-            } finally {
-                setLoading(false);
-            }
-        }
-
         fetchProducts();
     }, [])
 
-    const handleSaveProduct = async (productData) => {
+    const handleOpenCreateModal = () => {
+        setEditingProduct(null);
+        setIsModalOpen(true);
+    }
+
+    const handleOpenEditModal = (product) => {
+        setEditingProduct(product); // Define o produto a ser editado
+        setIsModalOpen(true);
+    };
+
+    const handleDeleteProduct = async (productId) => { 
+        if (window.confirm('Tem certeza que deseja excluir este produto?')) {
+            try {
+                await apiClient.delete(`/products/${productId}/`);
+                setProducts(products.filter((p) => p.id !== productId));
+            } catch (err) {
+                console.error('Falha ao excluir produto:', err);
+                setError('Não foi possível excluir o produto.');
+            }
+        }
+    }
+
+    const handleSaveProduct = async (productData, productId) => {
         try {
-            const response = await apiClient.post('/products/', productData);
-            setProducts(prevProducts => [response.data, ...prevProducts]);
+            if (productId) {
+                const response = await apiClient.patch(
+                    `/products/${productId}/`,
+                    productData,
+                );
+                setProducts(
+                    products.map((p) =>
+                        p.id === productId ? response.data : p,
+                    ),
+                );
+            } else {
+                const response = await apiClient.post('/products/', productData);
+                setProducts((prevProducts) => [response.data, ...prevProducts]);
+            }
+            
             setIsModalOpen(false);
         } catch (error) {
             console.error('Falha ao criar produto:', error.response?.data);
@@ -59,7 +94,7 @@ const ProductsPage = () => {
                 {canManageProducts && (
                     <button
                         className="add-product-btn"
-                        onClick={() => setIsModalOpen(true)}>
+                        onClick={handleOpenCreateModal}>
                         + Adicionar Produto
                     </button>
                 )}
@@ -91,10 +126,18 @@ const ProductsPage = () => {
                                 <td>{product.supplier}</td>
                                 {canManageProducts && (
                                     <td className="action-buttons">
-                                        <button className="edit-btn">
+                                        <button
+                                            onClick={() =>
+                                                handleOpenEditModal(product)
+                                            }
+                                            className="edit-btn">
                                             Editar
                                         </button>
-                                        <button className="delete-btn">
+                                        <button
+                                            onClick={() =>
+                                                handleDeleteProduct(product.id)
+                                            }
+                                            className="delete-btn">
                                             Excluir
                                         </button>
                                     </td>
@@ -109,6 +152,7 @@ const ProductsPage = () => {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleSaveProduct}
+                productToEdit={editingProduct}
             />
         </div>
     );
