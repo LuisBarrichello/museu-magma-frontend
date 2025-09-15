@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ProductModal.css';
 
 const CATEGORY_CHOICES = [
@@ -15,7 +15,7 @@ const UNIT_CHOICES = [
     { value: 'MT', label: 'Metro' },
 ];
 
-const ProductModal = ({ isOpen, onClose, onSave }) => {
+const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
     const [formData, setFormData] = useState({
         name: '',
         cost_price: '',
@@ -24,6 +24,28 @@ const ProductModal = ({ isOpen, onClose, onSave }) => {
         category: 'OTHER',
         unit_of_measure: 'UNIT',
     });
+
+    useEffect(() => {
+        if (productToEdit) {
+            setFormData({
+                name: productToEdit.name || '',
+                cost_price: productToEdit.cost_price || '',
+                profit_margin: productToEdit.profit_margin || '',
+                quantity: productToEdit.quantity || '',
+                category: productToEdit.category || 'OTHER',
+                unit_of_measure: productToEdit.unit_of_measure || 'UNIT',
+            });
+        } else {
+            setFormData({
+                name: '',
+                cost_price: '',
+                profit_margin: '',
+                quantity: '',
+                category: 'OTHER',
+                unit_of_measure: 'UNIT',
+            });
+        }
+    }, [productToEdit, isOpen])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -42,7 +64,11 @@ const ProductModal = ({ isOpen, onClose, onSave }) => {
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <h2>Adicionar Novo Produto</h2>
+                <h2>
+                    {productToEdit
+                        ? 'Editar Produto'
+                        : 'Adicionar Novo Produto'}
+                </h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="name">Nome do Produto</label>
