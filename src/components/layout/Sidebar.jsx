@@ -16,6 +16,7 @@ const Sidebar = () => {
         SELLER: [
             { path: '/dashboard', label: 'Dashboard' },
             { path: '/sales', label: 'Minhas Vendas' },
+            { path: '/products', label: 'Visualizar Produtos' },
         ],
         STOCKCLERK: [
             { path: '/dashboard', label: 'Dashboard' },
