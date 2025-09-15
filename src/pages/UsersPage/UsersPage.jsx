@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import apiClient from '../../services/api';
 import UserModal from '../../components/UserModal/UserModal';
 import './UsersPage.css';
+import Spinner from '../../components/common/Spinner/Spinner';
 
 const UsersPage = () => {
     const [users, setUsers] = useState([]);
@@ -71,7 +72,7 @@ const UsersPage = () => {
         }
     };
 
-    if (loading) return <div>Carregando...</div>;
+    if (loading) return <Spinner />;
     if (error) return <div className="error-message">{error}</div>;
 
     return (

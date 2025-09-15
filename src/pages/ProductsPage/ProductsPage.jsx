@@ -3,6 +3,7 @@ import { useAuth } from '../../hooks/useAuth';
 import apiClient from '../../services/api';
 import ProductModal from '../../components/ProductModal/ProductModal';
 import './ProductsPage.css';
+import Spinner from '../../components/common/Spinner/Spinner';
 
 const ProductsPage = () => {
     const [products, setProducts] = useState([]);
@@ -80,7 +81,7 @@ const ProductsPage = () => {
         user?.user_type === 'ADMIN' || user?.user_type === 'STOCKCLERK';
     
     if (loading) {
-        return <div className="loading-message">Carregando produtos...</div>;
+        return <Spinner />;
     }
 
     if (error) {
