@@ -7,12 +7,16 @@ import './SalesPage.css';
 const SalesPage = () => {
     const [sales, setSales] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const fetchSales = async () => {
         try {
             const response = await apiClient.get('/sales/');
             setSales(response.data.results);
         } catch (error) {
+            setError(
+                error.message || 'Falha ao carregar o histórico de vendas.',
+            );
             console.error('Failed to fetch sales', error);
         } finally {
             setLoading(false);
@@ -24,6 +28,7 @@ const SalesPage = () => {
     }, []);
 
     if (loading) return <Spinner />;
+    if (error) return <div className="error-message">{error}</div>;
 
     return (
         <div className="sales-page">
