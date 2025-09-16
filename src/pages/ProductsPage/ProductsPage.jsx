@@ -20,7 +20,7 @@ const ProductsPage = () => {
             setProducts(response.data.results);
             setError(null);
         } catch (error) {
-            setError('Failed to fetch products');
+            setError(error.message || 'Falha ao carregar produtos.');
             console.error('Error fetching products:', error);
         } finally {
             setLoading(false);
@@ -46,9 +46,9 @@ const ProductsPage = () => {
             try {
                 await apiClient.delete(`/products/${productId}/`);
                 setProducts(products.filter((p) => p.id !== productId));
-            } catch (err) {
-                console.error('Falha ao excluir produto:', err);
-                setError('Não foi possível excluir o produto.');
+            } catch (error) {
+                console.error('Falha ao excluir produto:', error);
+                setError(error.message || 'Não foi possível excluir o produto.');
             }
         }
     }
@@ -73,7 +73,10 @@ const ProductsPage = () => {
             setIsModalOpen(false);
         } catch (error) {
             console.error('Falha ao criar produto:', error.response?.data);
-            setError('Não foi possível salvar o produto. Verifique os dados.');
+            setError(
+                error.message ||
+                    'Não foi possível salvar o produto. Verifique os dados.',
+            );
         }
     };
 

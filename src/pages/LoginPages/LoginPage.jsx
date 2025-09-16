@@ -18,7 +18,7 @@ const LoginPage = () => {
         try {
             await login(username, password);
         } catch (error) {
-            setError('Usuário ou senha inválidos. Tente novamente.');
+            setError(error.message || 'Ocorreu um erro inesperado.');
             console.error(error);
         } finally {
             setIsLoading(false);

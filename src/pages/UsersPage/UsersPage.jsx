@@ -18,7 +18,7 @@ const UsersPage = () => {
             setUsers(response.data.results);
             console.log(response.data.results);
         } catch (error) {
-            setError('Falha ao carregar usuários.');
+            setError(error.message || 'Falha ao carregar usuários.');
             console.error(error);
         } finally {
             setLoading(false);
@@ -45,7 +45,9 @@ const UsersPage = () => {
                 await apiClient.delete(`/users/${userId}/`);
                 setUsers(users.filter((u) => u.id !== userId));
             } catch (error) {
-                setError('Não foi possível excluir o usuário.');
+                setError(
+                    error.message || 'Não foi possível excluir o usuário.',
+                ); 
                 console.error(error);
             }
         }
@@ -68,7 +70,10 @@ const UsersPage = () => {
             setIsModalOpen(false);
         } catch (error) {
             console.error('Falha ao salvar usuário:', error.response?.data);
-            setError('Não foi possível salvar o usuário. Verifique os dados.');
+            setError(
+                error.message ||
+                    'Não foi possível salvar o usuário. Verifique os dados.',
+            );
         }
     };
 
