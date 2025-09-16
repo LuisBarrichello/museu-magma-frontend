@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './UserModal.css';
+import PropTypes from 'prop-types'; 
 
 const USER_TYPE_CHOICES = [
     { value: 'SELLER', label: 'Vendedor' },
-    { value: 'STOCKERCLERK', label: 'Estoquista' },
+    { value: 'STOCKCLERK', label: 'Estoquista' },
     { value: 'ADMIN', label: 'Administrador' },
 ];
 
@@ -132,5 +133,12 @@ const UserModal = ({ isOpen, onClose, onSave, userToEdit }) => {
         </div>
     );
 };
+
+UserModal.propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    userToEdit: PropTypes.object,
+}
 
 export default UserModal;

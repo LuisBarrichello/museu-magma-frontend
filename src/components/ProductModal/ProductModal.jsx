@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ProductModal.css';
+import PropTypes from 'prop-types'; 
 
 const CATEGORY_CHOICES = [
     { value: 'FOSSIL', label: 'Fóssil' },
@@ -182,6 +183,22 @@ const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
             </div>
         </div>
     );
+};
+
+ProductModal.propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    productToEdit: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        cost_price: PropTypes.string,
+        profit_margin: PropTypes.string,
+        quantity: PropTypes.string,
+        category: PropTypes.string,
+        unit_of_measure: PropTypes.string,
+        supplier: PropTypes.string,
+    }),
 };
 
 export default ProductModal;
