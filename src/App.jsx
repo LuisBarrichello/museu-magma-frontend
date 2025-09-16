@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPages/LoginPage';
 import DashboardPage from './pages/DashboardPage/DashboardPage';
 import ProductsPage from './pages/ProductsPage/ProductsPage';
 import SalesPage from './pages/SalesPage/SalesPage';
+import NewSalePage from './pages/SalesPage/NewSalePage/NewSalePage';
 import UsersPage from './pages/UsersPage/UsersPage';
 import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
 
@@ -64,6 +65,7 @@ function App() {
                                 />
                             }>
                             <Route path="/sales" element={<SalesPage />} />
+                            <Route path="/sales/new" element={<NewSalePage />} />
                         </Route>
                         <Route
                             element={
