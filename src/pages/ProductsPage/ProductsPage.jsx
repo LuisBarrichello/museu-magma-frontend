@@ -1,35 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import apiClient from '../../services/api';
+import useApi from '../../hooks/useApi';
 import ProductModal from '../../components/ProductModal/ProductModal';
 import './ProductsPage.css';
 import Spinner from '../../components/common/Spinner/Spinner';
 
 const ProductsPage = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const {
+        data: products,
+        setData: setProducts,
+        loading,
+        error,
+    } = useApi('/products/');
     const { user } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
-
-    const fetchProducts = async () => {
-        try {
-            setLoading(true);
-            const response = await apiClient.get('/products/');
-            setProducts(response.data.results);
-            setError(null);
-        } catch (error) {
-            setError(error.message || 'Falha ao carregar produtos.');
-            console.error('Error fetching products:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchProducts();
-    }, [])
+    const [saveError, setSaveError] = useState(null);
 
     const handleOpenCreateModal = () => {
         setEditingProduct(null);
@@ -41,17 +28,18 @@ const ProductsPage = () => {
         setIsModalOpen(true);
     };
 
-    const handleDeleteProduct = async (productId) => { 
+    const handleDeleteProduct = async (productId) => {
         if (window.confirm('Tem certeza que deseja excluir este produto?')) {
             try {
                 await apiClient.delete(`/products/${productId}/`);
                 setProducts(products.filter((p) => p.id !== productId));
-            } catch (error) {
-                console.error('Falha ao excluir produto:', error);
-                setError(error.message || 'Não foi possível excluir o produto.');
+            } catch (err) {
+                setSaveError(
+                    err.message || 'Não foi possível excluir o produto.',
+                );
             }
         }
-    }
+    };
 
     const handleSaveProduct = async (productData, productId) => {
         try {
@@ -73,7 +61,7 @@ const ProductsPage = () => {
             setIsModalOpen(false);
         } catch (error) {
             console.error('Falha ao criar produto:', error.response?.data);
-            setError(
+            setSaveError(
                 error.message ||
                     'Não foi possível salvar o produto. Verifique os dados.',
             );
@@ -87,9 +75,7 @@ const ProductsPage = () => {
         return <Spinner />;
     }
 
-    if (error) {
-        return <div className="error-message">{error}</div>;
-    }
+    if (error) return <div className="error-message">{error}</div>;
 
     return (
         <div className="products-page">
@@ -157,6 +143,7 @@ const ProductsPage = () => {
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleSaveProduct}
                 productToEdit={editingProduct}
+                error={saveError}
             />
         </div>
     );

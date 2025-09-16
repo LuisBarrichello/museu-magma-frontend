@@ -1,31 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import apiClient from '../../services/api';
+import useApi from '../../hooks/useApi';
 import Spinner from '../../components/common/Spinner/Spinner';
 import './SalesPage.css'; 
 
 const SalesPage = () => {
-    const [sales, setSales] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    const fetchSales = async () => {
-        try {
-            const response = await apiClient.get('/sales/');
-            setSales(response.data.results);
-        } catch (error) {
-            setError(
-                error.message || 'Falha ao carregar o histórico de vendas.',
-            );
-            console.error('Failed to fetch sales', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-    
-    useEffect(() => {
-        fetchSales();
-    }, []);
+    const { data: sales, loading, error } = useApi('/sales/');
 
     if (loading) return <Spinner />;
     if (error) return <div className="error-message">{error}</div>;
