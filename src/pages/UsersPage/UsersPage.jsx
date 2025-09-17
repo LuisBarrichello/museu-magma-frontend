@@ -1,33 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import apiClient from '../../services/api';
+import useApi from '../../hooks/useApi';
 import UserModal from '../../components/UserModal/UserModal';
 import './UsersPage.css';
 import Spinner from '../../components/common/Spinner/Spinner';
 
 const UsersPage = () => {
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const {
+        data: users,
+        setData: setUsers,
+        loading,
+        error,
+    } = useApi('/users/');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
-
-    const fetchUsers = async () => {
-        try {
-            setLoading(true);
-            const response = await apiClient.get('/users/');
-            setUsers(response.data.results);
-            console.log(response.data.results);
-        } catch (error) {
-            setError(error.message || 'Falha ao carregar usuários.');
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchUsers();
-    }, []);
+    const [saveError, setSaveError] = useState(null);
 
     const handleOpenCreateModal = () => {
         setEditingUser(null);
@@ -45,16 +32,16 @@ const UsersPage = () => {
                 await apiClient.delete(`/users/${userId}/`);
                 setUsers(users.filter((u) => u.id !== userId));
             } catch (error) {
-                setError(
+                setSaveError(
                     error.message || 'Não foi possível excluir o usuário.',
-                ); 
-                console.error(error);
+                );
             }
         }
     };
 
     const handleSaveUser = async (userData, userId) => {
         try {
+            setSaveError(null);
             if (userId) {
                 const response = await apiClient.patch(
                     `/users/${userId}/`,
@@ -69,8 +56,7 @@ const UsersPage = () => {
             }
             setIsModalOpen(false);
         } catch (error) {
-            console.error('Falha ao salvar usuário:', error.response?.data);
-            setError(
+            setSaveError(
                 error.message ||
                     'Não foi possível salvar o usuário. Verifique os dados.',
             );
@@ -136,6 +122,7 @@ const UsersPage = () => {
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleSaveUser}
                 userToEdit={editingUser}
+                error={saveError}
             />
         </div>
     );
