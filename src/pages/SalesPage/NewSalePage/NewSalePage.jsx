@@ -11,6 +11,10 @@ const NewSalePage = () => {
     const [discount, setDiscount] = useState(0);
     const navigate = useNavigate();
 
+    const [customerSearch, setCustomerSearch] = useState('');
+    const [customerSearchResults, setCustomerSearchResults] = useState([]);
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
+
     useEffect(() => {
         if (productSearch.length < 2) {
             setSearchResults([]);
@@ -24,6 +28,22 @@ const NewSalePage = () => {
         }, 300); // Debounce for 300ms
         return () => clearTimeout(dalayDebounceFn);
     }, [productSearch])
+
+    useEffect(() => {
+        if (customerSearch.length < 2) {
+            setCustomerSearchResults([]);
+            return;
+        }
+        const delayDebounceFn = setTimeout(() => {
+            apiClient
+                .get(`/customers/?search=${customerSearch}`)
+                .then((res) => setCustomerSearchResults(res.data.results))
+                .catch((err) =>
+                    console.error('Failed to fetch customers', err),
+                );
+        }, 300);
+        return () => clearTimeout(delayDebounceFn);
+    }, [customerSearch]);
 
     const addProductToCart = (product) => {
         setCart(currentCart => {
@@ -50,6 +70,12 @@ const NewSalePage = () => {
         }
     };
 
+    const handleSelectCustomer = (customer) => {
+        setSelectedCustomer(customer);
+        setCustomerSearch('');
+        setCustomerSearchResults([]);
+    };
+
     const subtotal = cart.reduce((acc, item) => acc + (item.sale_price * item.quantity), 0);
     const total = subtotal - discount;
 
@@ -61,6 +87,7 @@ const NewSalePage = () => {
                 product_id: item.id,
                 quantity: item.quantity,
             })),
+            customer: selectedCustomer ? selectedCustomer.id : null,
         };
 
         try {
@@ -81,23 +108,75 @@ const NewSalePage = () => {
             <div className="sale-layout">
                 {/* Column Left: search products */}
                 <div className="product-search-column">
-                    <h3>Buscar Produto</h3>
-                    <input
-                        type="text"
-                        placeholder="Digite o nome ou código do produto..."
-                        value={productSearch}
-                        onChange={(e) => setProductSearch(e.target.value)}
-                    />
-                    <ul className="search-results">
-                        {searchResults.map((product) => (
-                            <li
-                                key={product.id}
-                                onClick={() => addProductToCart(product)}>
-                                {product.name}{' '}
-                                <span>(Estoque: {product.quantity})</span>
-                            </li>
-                        ))}
-                    </ul>
+                    {/* --- BUSCA DE CLIENTES (NOVO) --- */}
+                    <div className="customer-search-section">
+                        <h3>Associar Cliente (Opcional)</h3>
+                        {selectedCustomer ? (
+                            <div className="selected-customer">
+                                <span>{selectedCustomer.name}</span>
+                                <button
+                                    onClick={() => setSelectedCustomer(null)}>
+                                    Remover
+                                </button>
+                            </div>
+                        ) : (
+                            <>
+                                <input
+                                    type="text"
+                                    placeholder="Buscar cliente por nome ou documento..."
+                                    value={customerSearch}
+                                    onChange={(e) =>
+                                        setCustomerSearch(e.target.value)
+                                    }
+                                />
+                                {customerSearchResults.length > 0 && (
+                                    <ul className="search-results">
+                                        {customerSearchResults.map(
+                                            (customer) => (
+                                                <li
+                                                    key={customer.id}
+                                                    onClick={() =>
+                                                        handleSelectCustomer(
+                                                            customer,
+                                                        )
+                                                    }>
+                                                    {customer.name}{' '}
+                                                    <span>
+                                                        ({customer.document})
+                                                    </span>
+                                                </li>
+                                            ),
+                                        )}
+                                    </ul>
+                                )}
+                            </>
+                        )}
+                    </div>
+                    <div className="product-search-section">
+                        <h3>Buscar Produto</h3>
+                        <input
+                            type="text"
+                            placeholder="Digite o nome ou código do produto..."
+                            value={productSearch}
+                            onChange={(e) => setProductSearch(e.target.value)}
+                        />
+                        {searchResults.length > 0 && (
+                            <ul className="search-results">
+                                {searchResults.map((product) => (
+                                    <li
+                                        key={product.id}
+                                        onClick={() =>
+                                            addProductToCart(product)
+                                        }>
+                                        {product.name}{' '}
+                                        <span>
+                                            (Estoque: {product.quantity})
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
                 </div>
 
                 {/* Column Right: cart and finalize sale */}

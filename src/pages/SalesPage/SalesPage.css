@@ -93,3 +93,31 @@
     padding: 1em;
     background-color: var(--color-success);
 }
+
+.customer-search-section {
+    margin-bottom: 2rem;
+}
+
+.product-search-section {
+    margin-top: 2rem; /* Adiciona um espaço entre as seções */
+}
+
+.selected-customer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-background);
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--color-primary);
+}
+
+.selected-customer span {
+    font-weight: 500;
+}
+
+.selected-customer button {
+    font-size: 0.8em;
+    padding: 0.3em 0.6em;
+    background-color: var(--color-error);
+}

@@ -12,6 +12,7 @@ import SalesPage from './pages/SalesPage/SalesPage';
 import NewSalePage from './pages/SalesPage/NewSalePage/NewSalePage';
 import UsersPage from './pages/UsersPage/UsersPage';
 import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
+import CustomersPage from './pages/CustomersPage/CustomersPage';
 
 function App() {
     return (
@@ -42,17 +43,6 @@ function App() {
                                 path="/dashboard"
                                 element={<DashboardPage />}
                             />
-                        </Route>
-                        <Route
-                            element={
-                                <RoleProtectedRoute
-                                    allowedRoles={[
-                                        'ADMIN',
-                                        'STOCKCLERK',
-                                        'SELLER',
-                                    ]}
-                                />
-                            }>
                             <Route
                                 path="/products"
                                 element={<ProductsPage />}
@@ -65,7 +55,14 @@ function App() {
                                 />
                             }>
                             <Route path="/sales" element={<SalesPage />} />
-                            <Route path="/sales/new" element={<NewSalePage />} />
+                            <Route
+                                path="/sales/new"
+                                element={<NewSalePage />}
+                            />
+                            <Route
+                                path="/customers"
+                                element={<CustomersPage />}
+                            />
                         </Route>
                         <Route
                             element={
