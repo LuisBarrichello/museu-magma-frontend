@@ -1,0 +1,27 @@
+.customers-page { 
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.page-header { 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.page-header h1 { 
+    margin: 0;
+}
+
+.add-btn { 
+    font-size: 0.9em;
+}
+
+.list-container { 
+    background-color: var(--color-background-light);
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow-x: auto;
+}

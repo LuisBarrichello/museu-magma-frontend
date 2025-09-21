@@ -9,12 +9,14 @@ const Sidebar = () => {
     const navLinks = {
         ADMIN: [
             { path: '/dashboard', label: 'Dashboard' },
+            { path: '/customers', label: 'Clientes' },
             { path: '/sales', label: 'Vendas' },
             { path: '/products', label: 'Produtos' },
             { path: '/users', label: 'Usuários' },
         ],
         SELLER: [
             { path: '/dashboard', label: 'Dashboard' },
+            { path: '/customers', label: 'Clientes' },
             { path: '/sales', label: 'Minhas Vendas' },
             { path: '/products', label: 'Visualizar Produtos' },
         ],

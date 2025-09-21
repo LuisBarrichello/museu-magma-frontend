@@ -1,0 +1,15 @@
+.modal-content .form-group { 
+    margin-bottom: 1rem; 
+}
+
+.modal-content textarea { 
+    min-height: 80px; 
+    resize: vertical; 
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 0.85em;
+    margin-top: 5px;
+    display: block;
+}
