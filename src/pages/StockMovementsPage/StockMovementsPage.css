@@ -1,0 +1,41 @@
+.stock-movements-page {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.filters-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.filters-container label {
+    font-weight: 500;
+}
+
+.filters-container select {
+    min-width: 250px;
+    background-color: var(--color-background);
+}
+
+.type-badge {
+    font-weight: 700;
+}
+
+.type-entry {
+    color: var(--color-success);
+}
+
+.type-sale {
+    color: var(--color-error);
+}
+
+.type-adjust {
+    color: var(--color-warning);
+}
