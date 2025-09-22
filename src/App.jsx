@@ -13,6 +13,7 @@ import NewSalePage from './pages/SalesPage/NewSalePage/NewSalePage';
 import UsersPage from './pages/UsersPage/UsersPage';
 import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
 import CustomersPage from './pages/CustomersPage/CustomersPage';
+import StockMovementsPage from './pages/StockMovementsPage/StockMovementsPage';
 
 function App() {
     return (
@@ -43,10 +44,6 @@ function App() {
                                 path="/dashboard"
                                 element={<DashboardPage />}
                             />
-                            <Route
-                                path="/products"
-                                element={<ProductsPage />}
-                            />
                         </Route>
                         <Route
                             element={
@@ -69,6 +66,21 @@ function App() {
                                 <RoleProtectedRoute allowedRoles={['ADMIN']} />
                             }>
                             <Route path="/users" element={<UsersPage />} />
+                        </Route>
+                        <Route
+                            element={
+                                <RoleProtectedRoute
+                                    allowedRoles={['ADMIN', 'STOCKCLERK']}
+                                />
+                            }>
+                            <Route
+                                path="/products"
+                                element={<ProductsPage />}
+                            />
+                            <Route
+                                path="/stock-movements"
+                                element={<StockMovementsPage />}
+                            />
                         </Route>
                     </Route>
 
