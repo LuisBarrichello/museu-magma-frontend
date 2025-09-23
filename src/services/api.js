@@ -13,10 +13,10 @@ const apiClient = axios.create({
 // ===================================================================
 apiClient.interceptors.request.use(
     (config) => {
-        const acessToken = localStorage.getItem('accessToken'); 
+        const accessToken = localStorage.getItem('accessToken'); 
 
-        if (acessToken) {
-            config.headers.Authorization = `Bearer ${acessToken}`;
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
         }
 
         return config;
@@ -35,7 +35,14 @@ apiClient.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        if (error.response.status === 401 && !originalRequest._retry) {
+        const isAuthEndpoint = originalRequest.url.includes('/token');
+
+        if (
+            error.response &&
+            error.response.status === 401 &&
+            !originalRequest._retry &&
+            !isAuthEndpoint
+        ) {
             originalRequest._retry = true;
 
             try {
@@ -47,15 +54,20 @@ apiClient.interceptors.response.use(
                 }
 
                 const response = await apiClient.post('/token/refresh/', {
-                    refreshToken: refreshToken,
+                    refresh: refreshToken,
                 });
 
-                const newAcessToken = response.data.acessToken;
+                const newAccessToken = response.data.access;
 
-                localStorage.setItem('accessToken', newAcessToken);
-                apiClient.defaults.headers.common['Authorization'] = `Bearer ${newAcessToken}`;
+                localStorage.setItem('accessToken', newAccessToken);
 
-                originalRequest.headers['Authorization'] = `Bearer ${newAcessToken}`;
+                originalRequest.headers[
+                    'Authorization'
+                ] = `Bearer ${newAccessToken}`;
+
+                apiClient.defaults.headers.common[
+                    'Authorization'
+                ] = `Bearer ${newAccessToken}`;
 
                 return apiClient(originalRequest);
             } catch (refreshError) {
