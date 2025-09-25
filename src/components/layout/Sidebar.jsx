@@ -14,6 +14,7 @@ const Sidebar = () => {
             { path: '/products', label: 'Produtos' },
             { path: '/stock-movements', label: 'Histórico de Estoque' },
             { path: '/users', label: 'Usuários' },
+            { path: '/reports/profitability', label: 'Relatório de Lucro' },
         ],
         SELLER: [
             { path: '/dashboard', label: 'Dashboard' },
