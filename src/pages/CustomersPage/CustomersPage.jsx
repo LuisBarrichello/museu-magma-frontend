@@ -3,7 +3,23 @@ import useApi from '../../hooks/useApi';
 import apiClient from '../../services/api';
 import Spinner from '../../components/common/Spinner/Spinner';
 import CustomerModal from '../../components/CustomerModal/CustomerModal';
+import DetailsModal from '../../components/common/DetailsModal/DetailsModal';
 import './CustomersPage.css';
+
+const customerDetailsConfig = [
+    { label: 'ID', key: 'id' },
+    { label: 'Nome', key: 'name' },
+    { label: 'Documento', key: 'document' },
+    { label: 'Tipo de Cliente', key: 'customer_type_display' },
+    { label: 'Email', key: 'email' },
+    { label: 'Telefone', key: 'phone' },
+    { label: 'Notas', key: 'notes' },
+    {
+        label: 'Criado em',
+        key: 'created_at',
+        format: (value) => new Date(value).toLocaleDateString('pt-BR'),
+    },
+];
 
 const CustomersPage = () => {
     const {
@@ -12,19 +28,20 @@ const CustomersPage = () => {
         loading,
         error,
     } = useApi('/customers/');
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingCustomer, setEditingCustomer] = useState(null);
     const [actionError, setActionError] = useState(null);
+    const [modalState, setModalState] = useState({ type: null, data: null });
+
+    const handleRowClick = (customer) => {
+        setModalState({ type: 'details', data: customer });
+    };
 
     const handleOpenCreateModal = () => {
-        setEditingCustomer(null);
-        setIsModalOpen(true);
-    }
+        setModalState({ type: 'create', data: null });
+    };
 
     const handleOpenEditModal = (customer) => {
-        setEditingCustomer(customer);
-        setIsModalOpen(true);
-    }
+        setModalState({ type: 'edit', data: customer });
+    };
 
     const handleSaveCustomer = async (customerData, customerId) => {
         try {
@@ -39,14 +56,17 @@ const CustomersPage = () => {
                         c.id === customerId ? response.data : c,
                     ),
                 );
-                setIsModalOpen(false);
+                setModalState({ type: null, data: null });
             } else {
-                const response = await apiClient.post('/customers/', customerData);
+                const response = await apiClient.post(
+                    '/customers/',
+                    customerData,
+                );
                 setCustomers((prevCustomers) => [
                     response.data,
                     ...prevCustomers,
                 ]);
-                setIsModalOpen(false);
+                setModalState({ type: null, data: null });
             }
         } catch (error) {
             setActionError(
@@ -67,7 +87,7 @@ const CustomersPage = () => {
                 );
             }
         }
-    }
+    };
 
     if (loading) return <Spinner />;
     if (error) return <div className="error-message">{error}</div>;
@@ -94,12 +114,17 @@ const CustomersPage = () => {
                     </thead>
                     <tbody>
                         {customers.map((customer) => (
-                            <tr key={customer.id}>
+                            <tr
+                                key={customer.id}
+                                onClick={() => handleRowClick(customer)}
+                                className="clickable-row">
                                 <td>{customer.name}</td>
                                 <td>{customer.document}</td>
                                 <td>{customer.email}</td>
                                 <td>{customer.phone}</td>
-                                <td className="action-buttons">
+                                <td
+                                    className="action-buttons"
+                                    onClick={(e) => e.stopPropagation()}>
                                     <button
                                         onClick={() =>
                                             handleOpenEditModal(customer)
@@ -122,10 +147,22 @@ const CustomersPage = () => {
             </div>
 
             <CustomerModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                isOpen={
+                    modalState.type === 'create' || modalState.type === 'edit'
+                }
+                onClose={() => setModalState({ type: null, data: null })}
                 onSave={handleSaveCustomer}
-                customerToEdit={editingCustomer}
+                customerToEdit={
+                    modalState.type === 'edit' ? modalState.data : null
+                }
+            />
+
+            <DetailsModal
+                isOpen={modalState.type === 'details'}
+                onClose={() => setModalState({ type: null, data: null })}
+                title="Detalhes do Cliente"
+                data={modalState.data}
+                config={customerDetailsConfig}
             />
         </div>
     );

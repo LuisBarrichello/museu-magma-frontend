@@ -5,6 +5,42 @@ import useApi from '../../hooks/useApi';
 import ProductModal from '../../components/ProductModal/ProductModal';
 import './ProductsPage.css';
 import Spinner from '../../components/common/Spinner/Spinner';
+import DetailsModal from '../../components/common/DetailsModal/DetailsModal';
+
+const productDetailsConfig = [
+    { label: 'Nome', key: 'name' },
+    { label: 'Código', key: 'code' },
+    { label: 'Categoria', key: 'category_display' },
+    {
+        label: 'Preço de Venda',
+        key: 'sale_price',
+        format: (value) => `R$ ${value}`,
+    },
+    {
+        label: 'Preço de Custo',
+        key: 'cost_price',
+        format: (value) => `R$ ${value}`,
+    },
+    {
+        label: 'Margem de Lucro',
+        key: 'profit_margin',
+        format: (value) => `${value}%`,
+    },
+    { label: 'Estoque Atual', key: 'quantity' },
+    { label: 'Unidade', key: 'unit_of_measure_display' },
+    { label: 'Estoque Mínimo', key: 'minimum_quantity' },
+    { label: 'Fornecedor', key: 'supplier' },
+    {
+        label: 'Criado em',
+        key: 'created_at',
+        format: (value) => new Date(value).toLocaleDateString('pt-BR'),
+    },
+    {
+        label: 'Status',
+        key: 'is_active',
+        format: (value) => (value ? 'Ativo' : 'Inativo'),
+    },
+];
 
 const ProductsPage = () => {
     const {
@@ -14,18 +50,19 @@ const ProductsPage = () => {
         error,
     } = useApi('/products/');
     const { user } = useAuth();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingProduct, setEditingProduct] = useState(null);
     const [saveError, setSaveError] = useState(null);
+    const [modalState, setModalState] = useState({ type: null, data: null });
+
+    const handleRowClick = (product) => {
+        setModalState({ type: 'details', data: product });
+    };
 
     const handleOpenCreateModal = () => {
-        setEditingProduct(null);
-        setIsModalOpen(true);
+        setModalState({ type: 'create', data: null });
     }
 
     const handleOpenEditModal = (product) => {
-        setEditingProduct(product); // Define o produto a ser editado
-        setIsModalOpen(true);
+        setModalState({ type: 'edit', data: product });
     };
 
     const handleDeleteProduct = async (productId) => {
@@ -58,7 +95,7 @@ const ProductsPage = () => {
                 setProducts((prevProducts) => [response.data, ...prevProducts]);
             }
             
-            setIsModalOpen(false);
+            setModalState({ type: null, data: null });
         } catch (error) {
             console.error('Falha ao criar produto:', error.response?.data);
             setSaveError(
@@ -106,7 +143,10 @@ const ProductsPage = () => {
                     </thead>
                     <tbody>
                         {products.map((product) => (
-                            <tr key={product.id}>
+                            <tr
+                                key={product.id}
+                                onClick={() => handleRowClick(product)}
+                                className="clickable-row">
                                 <td>{product.name}</td>
                                 <td>{product.code}</td>
                                 <td>R$ {product.sale_price}</td>
@@ -115,7 +155,9 @@ const ProductsPage = () => {
                                 <td>{product.category_display}</td>
                                 <td>{product.supplier}</td>
                                 {canManageProducts && (
-                                    <td className="action-buttons">
+                                    <td
+                                        className="action-buttons"
+                                        onClick={(e) => e.stopPropagation()}>
                                         <button
                                             onClick={() =>
                                                 handleOpenEditModal(product)
@@ -139,11 +181,23 @@ const ProductsPage = () => {
             </div>
 
             <ProductModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                isOpen={
+                    modalState.type === 'edit' || modalState.type === 'create'
+                }
+                onClose={() => setModalState({ type: null, data: null })}
                 onSave={handleSaveProduct}
-                productToEdit={editingProduct}
+                productToEdit={
+                    modalState.type === 'edit' ? modalState.data : null
+                }
                 error={saveError}
+            />
+
+            <DetailsModal
+                isOpen={modalState.type === 'details'}
+                onClose={() => setModalState({ type: null, data: null })}
+                title="Detalhes do Produto"
+                data={modalState.data}
+                config={productDetailsConfig}
             />
         </div>
     );
