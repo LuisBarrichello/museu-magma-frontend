@@ -2,8 +2,32 @@ import React, { useState } from 'react';
 import apiClient from '../../services/api';
 import useApi from '../../hooks/useApi';
 import UserModal from '../../components/UserModal/UserModal';
-import './UsersPage.css';
 import Spinner from '../../components/common/Spinner/Spinner';
+import DetailsModal from '../../components/common/DetailsModal/DetailsModal';
+import './UsersPage.css';
+
+const formatFullName = (user) => {
+    if (!user) return '';
+    return `${user.first_name} ${user.last_name}`.trim();
+};
+
+const userDetailsConfig = [
+    { label: 'ID', key: 'id' },
+    { label: 'Nome de Usuário', key: 'username' },
+    { label: 'Email', key: 'email' },
+    {
+        label: 'Nome Completo',
+        key: 'full_name',  
+        format: (value, user) => formatFullName(user),
+    },
+    { label: 'Tipo de Usuário', key: 'user_type_display' },
+    { label: 'Saldo', key: 'balance', format: (value) => `R$ ${value}` },
+    {
+        label: 'Status',
+        key: 'is_active',
+        format: (value) => (value ? 'Ativo' : 'Inativo'),
+    },
+];
 
 const UsersPage = () => {
     const {
@@ -12,18 +36,19 @@ const UsersPage = () => {
         loading,
         error,
     } = useApi('/users/');
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingUser, setEditingUser] = useState(null);
     const [saveError, setSaveError] = useState(null);
+    const [modalState, setModalState] = useState({ type: null, data: null });
+
+    const handleRowClick = (user) => {
+        setModalState({ type: 'details', data: user });
+    };
 
     const handleOpenCreateModal = () => {
-        setEditingUser(null);
-        setIsModalOpen(true);
+        setModalState({ type: 'create', data: null });
     };
 
     const handleOpenEditModal = (user) => {
-        setEditingUser(user);
-        setIsModalOpen(true);
+        setModalState({ type: 'edit', data: user });
     };
 
     const handleDeleteUser = async (userId) => {
@@ -54,7 +79,7 @@ const UsersPage = () => {
                 const response = await apiClient.post('/users/', userData);
                 setUsers([response.data, ...users]);
             }
-            setIsModalOpen(false);
+            setModalState({ type: null, data: null });
         } catch (error) {
             setSaveError(
                 error.message ||
@@ -90,7 +115,10 @@ const UsersPage = () => {
                     </thead>
                     <tbody>
                         {users.map((user) => (
-                            <tr key={user.id}>
+                            <tr
+                                key={user.id}
+                                onClick={() => handleRowClick(user)}
+                                className="clickable-row">
                                 <td>{user.username}</td>
                                 <td>{`${user.first_name} ${user.last_name}`}</td>
                                 <td>{user.email}</td>
@@ -118,11 +146,21 @@ const UsersPage = () => {
             </div>
 
             <UserModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                isOpen={
+                    modalState.type === 'create' || modalState.type === 'edit'
+                }
+                onClose={() => setModalState({ type: null, data: null })}
                 onSave={handleSaveUser}
-                userToEdit={editingUser}
+                userToEdit={modalState.data}
                 error={saveError}
+            />
+
+            <DetailsModal
+                isOpen={modalState.type === 'details'}
+                onClose={() => setModalState({ type: null, data: null })}
+                title="Detalhes do Usuário"
+                data={modalState.data}
+                config={userDetailsConfig}
             />
         </div>
     );

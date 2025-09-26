@@ -82,6 +82,10 @@ td {
     background-color: var(--color-error);
 }
 
+.clickable-row {
+    cursor: pointer;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
