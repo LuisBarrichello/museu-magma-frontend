@@ -3,7 +3,7 @@ import logo from '../../assets/img/logo.webp';
 import { useAuth } from '../../hooks/useAuth';
 import './Layout.css';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
     const { user } = useAuth();
 
     const navLinks = {
@@ -32,24 +32,31 @@ const Sidebar = () => {
     const linksToShow = user ? navLinks[user.user_type] : [];
 
     return (
-        <aside className="app-sidebar">
+        <aside className={`app-sidebar ${isOpen ? 'open' : ''}`}>
             <div className="sidebar-header">
-                <img
-                    src={logo}
-                    alt="Museu Magma Logo"
-                    className="sidebar-logo"
-                />
+                <div>
+                    <img
+                        src={logo}
+                        alt="Museu Magma Logo"
+                        className="sidebar-logo"
+                    />
+                    <button className="sidebar-close-btn" onClick={onClose}>
+                        &times;
+                    </button>
+                </div>
                 <h2>Museu Magma</h2>
             </div>
             <nav className="sidebar-nav">
                 <ul>
                     {linksToShow.map((link) => (
                         <li key={link.path}>
+                            {/* Adiciona onClick para fechar o menu ao navegar */}
                             <NavLink
                                 to={link.path}
                                 className={({ isActive }) =>
                                     isActive ? 'active' : ''
-                                }>
+                                }
+                                onClick={onClose}>
                                 {link.label}
                             </NavLink>
                         </li>
