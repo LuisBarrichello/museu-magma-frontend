@@ -6,6 +6,7 @@ import ProductModal from '../../components/ProductModal/ProductModal';
 import './ProductsPage.css';
 import Spinner from '../../components/common/Spinner/Spinner';
 import DetailsModal from '../../components/common/DetailsModal/DetailsModal';
+import StockMovementModal from '../../components/StockMovementModal/StockMovementModal';
 
 const productDetailsConfig = [
     { label: 'Nome', key: 'name' },
@@ -105,6 +106,25 @@ const ProductsPage = () => {
         }
     };
 
+    const handleSaveStockMovement = async (productId, movementData) => {
+        try {
+            setSaveError(null);
+            const response = await apiClient.post(
+                `/products/${productId}/adjust-stock/`,
+                movementData,
+            );
+
+            setProducts(
+                products.map((p) => (p.id === productId ? response.data : p)),
+            );
+            setModalState({ type: null, data: null }); 
+        } catch (err) {
+            setSaveError(
+                err.message || 'Não foi possível registrar a movimentação.',
+            );
+        }
+    };
+
     const canManageProducts =
         user?.user_type === 'ADMIN' || user?.user_type === 'STOCKCLERK';
     
@@ -160,6 +180,16 @@ const ProductsPage = () => {
                                         onClick={(e) => e.stopPropagation()}>
                                         <button
                                             onClick={() =>
+                                                setModalState({
+                                                    type: 'movement',
+                                                    data: product,
+                                                })
+                                            }
+                                            className="move-btn">
+                                            Movimentar
+                                        </button>
+                                        <button
+                                            onClick={() =>
                                                 handleOpenEditModal(product)
                                             }
                                             className="edit-btn">
@@ -198,6 +228,13 @@ const ProductsPage = () => {
                 title="Detalhes do Produto"
                 data={modalState.data}
                 config={productDetailsConfig}
+            />
+
+            <StockMovementModal
+                isOpen={modalState.type === 'movement'}
+                onClose={() => setModalState({ type: null, data: null })}
+                onSave={handleSaveStockMovement}
+                product={modalState.data}
             />
         </div>
     );
