@@ -86,6 +86,10 @@ td {
     cursor: pointer;
 }
 
+.move-btn {
+    background-color: #5bc0de; /* Azul informativo */
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
