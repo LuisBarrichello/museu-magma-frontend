@@ -1,11 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useApi from '../../hooks/useApi';
 import Spinner from '../../components/common/Spinner/Spinner';
-import './SalesPage.css'; 
+import DetailsModal from '../../components/common/DetailsModal/DetailsModal';
+import './SalesPage.css';
+
+const salesDetailsConfig = [
+    { label: 'ID', key: 'id' },
+    { label: 'Cliente', key: 'customer_name' },
+    { label: 'Criado Por', key: 'created_by_name' },
+    {
+        label: 'Data da Venda',
+        key: 'sale_date',
+        format: (value) => new Date(value).toLocaleDateString('pt-BR'),
+    },
+    { label: 'Método de Pagamento', key: 'payment_method_display' },
+    { label: 'Status', key: 'status_display' },
+    { label: 'Desconto', key: 'discount' },
+    { label: 'Valor Total', key: 'total_amount' },
+    { label: 'Custo Total', key: 'total_cost' },
+    { label: 'Notas', key: 'notes' },
+];
+
+// const salesItemsConfig = [
+//     { label: 'ID do Item', key: 'id' },
+//     { label: 'Produto', key: 'product_name' },
+//     { label: 'Quantidade', key: 'quantity' },
+//     { label: 'Preço Unitário', key: 'unit_price' },
+// ];
 
 const SalesPage = () => {
     const { data: sales, loading, error } = useApi('/sales/');
+    const [modalState, setModalState] = useState({ type: null, data: null });
+
+    const handleRowClick = (product) => {
+        setModalState({ type: 'details', data: product });
+    };
 
     if (loading) return <Spinner />;
     if (error) return <div className="error-message">{error}</div>;
@@ -32,7 +62,10 @@ const SalesPage = () => {
                     </thead>
                     <tbody>
                         {sales.map((sale) => (
-                            <tr key={sale.id}>
+                            <tr
+                                key={sale.id}
+                                onClick={() => handleRowClick(sale)}
+                                className="clickable-row">
                                 <td>#{sale.id}</td>
                                 <td>
                                     {new Date(
@@ -48,6 +81,14 @@ const SalesPage = () => {
                     </tbody>
                 </table>
             </div>
+
+            <DetailsModal
+                isOpen={modalState.type === 'details'}
+                onClose={() => setModalState({ type: null, data: null })}
+                title="Detalhes da Venda"
+                data={modalState.data}
+                config={salesDetailsConfig}
+            />
         </div>
     );
 };

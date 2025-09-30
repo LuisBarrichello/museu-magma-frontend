@@ -13,10 +13,10 @@ const apiClient = axios.create({
 // ===================================================================
 apiClient.interceptors.request.use(
     (config) => {
-        const acessToken = localStorage.getItem('accessToken'); 
+        const accessToken = localStorage.getItem('accessToken'); 
 
-        if (acessToken) {
-            config.headers.Authorization = `Bearer ${acessToken}`;
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
         }
 
         return config;
@@ -32,42 +32,53 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     (response) => response,
 
-    (error) => {
-        const { response } = error;
+    async (error) => {
+        const originalRequest = error.config;
 
-        if (response) {
-            if (response.status === 401 || response.status === 403) {
+        const isAuthEndpoint = originalRequest.url.includes('/token');
+
+        if (
+            error.response &&
+            error.response.status === 401 &&
+            !originalRequest._retry &&
+            !isAuthEndpoint
+        ) {
+            originalRequest._retry = true;
+
+            try {
+                const refreshToken = localStorage.getItem('refreshToken');
+
+                if (!refreshToken) {
+                    window.location.href = '/login';
+                    return Promise.reject(error);
+                }
+
+                const response = await apiClient.post('/token/refresh/', {
+                    refresh: refreshToken,
+                });
+
+                const newAccessToken = response.data.access;
+
+                localStorage.setItem('accessToken', newAccessToken);
+
+                originalRequest.headers[
+                    'Authorization'
+                ] = `Bearer ${newAccessToken}`;
+
+                apiClient.defaults.headers.common[
+                    'Authorization'
+                ] = `Bearer ${newAccessToken}`;
+
+                return apiClient(originalRequest);
+            } catch (refreshError) {
+                console.error('Refresh token failed:', refreshError);
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('refreshToken');
-
                 window.location.href = '/login';
-
-                return Promise.reject(
-                    new Error('Sessão inválida ou expirada.')
-                );
+                return Promise.reject(refreshError);
             }
-
-            if (
-                response.data &&
-                response.data.errors &&
-                response.data.errors.detail
-            ) {
-                const errorDetail = response.data.errors.detail;
-
-                if (typeof errorDetail === 'object') {
-                    const messages = Object.entries(errorDetail).map(
-                        ([key, value]) => `${key}: ${value.join(', ')}`,
-                    );
-                    error.message = messages.join('\n');
-                } else {
-                    error.message = errorDetail;
-                }
-            }
-        } else {
-            error.message =
-                'Não foi possível se conectar ao servidor. Verifique sua conexão com a internet.';
         }
-
+        
         return Promise.reject(error);
     }
 )

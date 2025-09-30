@@ -14,6 +14,7 @@ import UsersPage from './pages/UsersPage/UsersPage';
 import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
 import CustomersPage from './pages/CustomersPage/CustomersPage';
 import StockMovementsPage from './pages/StockMovementsPage/StockMovementsPage';
+import ProfitabilityReportPage from './pages/Reports/ProfitabilityReportPage';
 
 function App() {
     return (
@@ -66,6 +67,10 @@ function App() {
                                 <RoleProtectedRoute allowedRoles={['ADMIN']} />
                             }>
                             <Route path="/users" element={<UsersPage />} />
+                            <Route
+                                path="/reports/profitability"
+                                element={<ProfitabilityReportPage />}
+                            />
                         </Route>
                         <Route
                             element={

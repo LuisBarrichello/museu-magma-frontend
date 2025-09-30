@@ -1,4 +1,7 @@
-/* Estrutura principal do Layout com CSS Grid */
+.hamburger-btn, .sidebar-close-btn, .overlay {
+    display: none;
+}
+
 .app-layout {
     display: grid;
     grid-template-columns: 240px 1fr; 
@@ -33,7 +36,7 @@
 }
 
 .sidebar-header img {
-    width: 100%;
+    width: 50%;
     height: auto;
     margin-bottom: 0.5rem;
 }
@@ -105,3 +108,88 @@
     filter: none;
 }
 
+@media (max-width: 768px) {
+    .app-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .app-sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100%;
+        z-index: 1001;
+        transform: translateX(-100%); 
+        transition: transform 0.3s ease-in-out;
+        width: 250px;
+    }
+
+    .app-sidebar.open {
+        transform: translateX(0); 
+        box-shadow: 5px 0px 15px rgba(0,0,0,0.2);
+    }
+
+    .sidebar-close-btn {
+        padding: 1rem;
+        width: 100%;
+        height: 100%;
+        display: block;
+        position: relative;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: var(--color-text);
+        border: 1px solid var(--color-border);
+    }
+
+    .sidebar-header div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .header-content {
+        justify-content: space-between; 
+        gap: 1rem;
+    }
+
+    .user-info span {
+        margin: 0;
+    }
+
+    .user-info {
+        text-align: center;
+    }
+
+    .hamburger-btn {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .hamburger-line {
+        width: 100%;
+        height: 3px;
+        background-color: var(--color-text);
+        border-radius: 2px;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        display: block;
+    }
+}
