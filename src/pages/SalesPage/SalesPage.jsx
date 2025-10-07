@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import useApi from '../../hooks/useApi';
 import Spinner from '../../components/common/Spinner/Spinner';
 import DetailsModal from '../../components/common/DetailsModal/DetailsModal';
 import './SalesPage.css';
+import SearchBar from '../../components/common/SearchBar/SearchBar';
+import PaginationControls from '../../components/common/PaginationControls/PaginationControls';
 
 const salesDetailsConfig = [
     { label: 'ID', key: 'id' },
@@ -22,15 +24,19 @@ const salesDetailsConfig = [
     { label: 'Notas', key: 'notes' },
 ];
 
-// const salesItemsConfig = [
-//     { label: 'ID do Item', key: 'id' },
-//     { label: 'Produto', key: 'product_name' },
-//     { label: 'Quantidade', key: 'quantity' },
-//     { label: 'Preço Unitário', key: 'unit_price' },
-// ];
-
 const SalesPage = () => {
-    const { data: sales, loading, error } = useApi('/sales/');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState('');
+    const PAGE_SIZE = 15;
+    const apiParams = useMemo(
+        () => ({
+            limit: PAGE_SIZE,
+            offset: (currentPage - 1) * PAGE_SIZE,
+            search: searchTerm,
+        }),
+        [currentPage, searchTerm],
+    );
+    const { data: sales, count, loading, error } = useApi('/sales/', apiParams);
     const [modalState, setModalState] = useState({ type: null, data: null });
 
     const handleRowClick = (product) => {
@@ -39,6 +45,7 @@ const SalesPage = () => {
 
     if (loading) return <Spinner />;
     if (error) return <div className="error-message">{error}</div>;
+    const totalPages = Math.ceil(count / PAGE_SIZE);
 
     return (
         <div className="sales-page">
@@ -48,6 +55,12 @@ const SalesPage = () => {
                     + Nova Venda
                 </Link>
             </header>
+
+            <SearchBar
+                onSearchChange={setSearchTerm}
+                setCurrentPage={setCurrentPage}
+            />
+
             <div className="list-container">
                 <table>
                     <thead>
@@ -81,6 +94,13 @@ const SalesPage = () => {
                     </tbody>
                 </table>
             </div>
+
+            <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                count={count}
+                setCurrentPage={setCurrentPage}
+            />
 
             <DetailsModal
                 isOpen={modalState.type === 'details'}

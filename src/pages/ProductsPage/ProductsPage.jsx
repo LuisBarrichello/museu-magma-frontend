@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import apiClient from '../../services/api';
 import useApi from '../../hooks/useApi';
@@ -7,6 +7,8 @@ import './ProductsPage.css';
 import Spinner from '../../components/common/Spinner/Spinner';
 import DetailsModal from '../../components/common/DetailsModal/DetailsModal';
 import StockMovementModal from '../../components/StockMovementModal/StockMovementModal';
+import SearchBar from '../../components/common/SearchBar/SearchBar';
+import PaginationControls from '../../components/common/PaginationControls/PaginationControls';
 
 const productDetailsConfig = [
     { label: 'Nome', key: 'name' },
@@ -44,15 +46,29 @@ const productDetailsConfig = [
 ];
 
 const ProductsPage = () => {
-    const {
-        data: products,
-        setData: setProducts,
-        loading,
-        error,
-    } = useApi('/products/');
     const { user } = useAuth();
     const [saveError, setSaveError] = useState(null);
     const [modalState, setModalState] = useState({ type: null, data: null });
+    const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState('');
+    const PAGE_SIZE = 15;
+
+    const apiParams = useMemo(
+        () => ({
+            limit: PAGE_SIZE,
+            offset: (currentPage - 1) * PAGE_SIZE,
+            search: searchTerm,
+        }),
+        [currentPage, searchTerm],
+    );
+
+    const {
+        data: products,
+        setData: setProducts,
+        count, 
+        loading,
+        error,
+    } = useApi('/products/', apiParams);
 
     const handleRowClick = (product) => {
         setModalState({ type: 'details', data: product });
@@ -134,6 +150,8 @@ const ProductsPage = () => {
 
     if (error) return <div className="error-message">{error}</div>;
 
+    const totalPages = Math.ceil(count / PAGE_SIZE);
+
     return (
         <div className="products-page">
             <header className="page-header">
@@ -146,6 +164,15 @@ const ProductsPage = () => {
                     </button>
                 )}
             </header>
+
+            <SearchBar
+                onSearchChange={setSearchTerm}
+                setCurrentPage={setCurrentPage}
+            />
+
+            {error && <div className="error-message">{error}</div>}
+
+            {loading && <Spinner />}
 
             <div className="products-list-container">
                 <table>
@@ -209,6 +236,13 @@ const ProductsPage = () => {
                     </tbody>
                 </table>
             </div>
+
+            <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                count={count}
+                setCurrentPage={setCurrentPage}
+            />
 
             <ProductModal
                 isOpen={

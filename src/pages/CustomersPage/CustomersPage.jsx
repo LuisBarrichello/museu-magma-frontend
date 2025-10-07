@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import useApi from '../../hooks/useApi';
 import apiClient from '../../services/api';
 import Spinner from '../../components/common/Spinner/Spinner';
 import CustomerModal from '../../components/CustomerModal/CustomerModal';
 import DetailsModal from '../../components/common/DetailsModal/DetailsModal';
 import './CustomersPage.css';
+import SearchBar from '../../components/common/SearchBar/SearchBar';
+import PaginationControls from '../../components/common/PaginationControls/PaginationControls';
 
 const customerDetailsConfig = [
     { label: 'ID', key: 'id' },
@@ -22,12 +24,24 @@ const customerDetailsConfig = [
 ];
 
 const CustomersPage = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState('');
+    const PAGE_SIZE = 15;
+    const apiParams = useMemo(
+        () => ({
+            limit: PAGE_SIZE,
+            offset: (currentPage - 1) * PAGE_SIZE,
+            search: searchTerm,
+        }),
+        [currentPage, searchTerm],
+    );
     const {
         data: customers,
         setData: setCustomers,
+        count,
         loading,
         error,
-    } = useApi('/customers/');
+    } = useApi('/customers/', apiParams);
     const [actionError, setActionError] = useState(null);
     const [modalState, setModalState] = useState({ type: null, data: null });
 
@@ -91,6 +105,7 @@ const CustomersPage = () => {
 
     if (loading) return <Spinner />;
     if (error) return <div className="error-message">{error}</div>;
+    const totalPages = Math.ceil(count / PAGE_SIZE);
 
     return (
         <div className="customers-page">
@@ -100,6 +115,12 @@ const CustomersPage = () => {
                     + Adicionar Cliente
                 </button>
             </header>
+
+            <SearchBar
+                onSearchChange={setSearchTerm}
+                setCurrentPage={setCurrentPage}
+            />
+
             {actionError && <div className="error-message">{actionError}</div>}
             <div className="list-container">
                 <table>
@@ -146,6 +167,13 @@ const CustomersPage = () => {
                 </table>
             </div>
 
+            <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                count={count}
+                setCurrentPage={setCurrentPage}
+            />
+
             <CustomerModal
                 isOpen={
                     modalState.type === 'create' || modalState.type === 'edit'
@@ -156,7 +184,6 @@ const CustomersPage = () => {
                     modalState.type === 'edit' ? modalState.data : null
                 }
             />
-
             <DetailsModal
                 isOpen={modalState.type === 'details'}
                 onClose={() => setModalState({ type: null, data: null })}
