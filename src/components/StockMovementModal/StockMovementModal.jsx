@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './StockMovementModal.css';
 
 const StockMovementModal = ({ isOpen, onClose, onSave, product }) => {
     const [quantityChange, setQuantityChange] = useState('');

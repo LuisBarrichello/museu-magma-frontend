@@ -1,0 +1,14 @@
+.search-and-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.search-and-pagination button {
+    margin-left: .5rem;
+}
+
+.search-input {
+    min-width: 300px;
+}
