@@ -1,21 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Spinner from '../../components/common/Spinner/Spinner';
 import './StockMovementsPage.css';
 import useApi from '../../hooks/useApi';
+import SearchBar from '../../components/common/SearchBar/SearchBar';
+import PaginationControls from '../../components/common/PaginationControls/PaginationControls';
 
 const StockMovementsPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [activeSearch, setActiveSearch] = useState('');
-    const endpoint = activeSearch
-        ? `/stock-movements/?search=${activeSearch}`
+    const endpoint = searchTerm
+        ? `/stock-movements/?search=${searchTerm}`
         : '/stock-movements/';
+    
+    const [currentPage, setCurrentPage] = useState(1);
+    const PAGE_SIZE = 5;
 
-    const { data: movements, loading, error } = useApi(endpoint);
-
-    const handleSearchSubmit = (e) => {
-        e.preventDefault();
-        setActiveSearch(searchTerm);
-    };
+    const apiParams = useMemo(
+            () => ({
+                limit: PAGE_SIZE,
+                offset: (currentPage - 1) * PAGE_SIZE,
+                search: searchTerm,
+            }),
+            [currentPage, searchTerm],
+    );
+    const {
+        data: movements,
+        count,
+        loading,
+        error,
+    } = useApi(endpoint, apiParams);
 
     const getMovementTypeClass = (type) => {
         switch (type) {
@@ -32,6 +44,7 @@ const StockMovementsPage = () => {
 
     if (loading) return <Spinner />;
     if (error) return <div className="error-message">{error}</div>;
+    const totalPages = Math.ceil(count / PAGE_SIZE);
 
     return (
         <div className="stock-movements-page">
@@ -39,15 +52,10 @@ const StockMovementsPage = () => {
                 <h1>Histórico de Movimentações de Estoque</h1>
             </header>
 
-            <form className="search-bar" onSubmit={handleSearchSubmit}>
-                <input
-                    type="text"
-                    placeholder="Filtrar por nome do produto..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <button type="submit">Buscar</button>
-            </form>
+            <SearchBar
+                onSearchChange={setSearchTerm}
+                setCurrentPage={setCurrentPage}
+            />
 
             <div className="list-container">
                 <table>
@@ -90,6 +98,13 @@ const StockMovementsPage = () => {
                     </tbody>
                 </table>
             </div>
+            <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                count={count}
+                setCurrentPage={setCurrentPage}
+                item={"Movimentações"}
+            />
         </div>
     );
 };

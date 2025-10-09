@@ -2,30 +2,71 @@ import { NavLink } from 'react-router-dom';
 import logo from '../../assets/img/logo.webp';
 import { useAuth } from '../../hooks/useAuth';
 import './Layout.css';
+import {
+    FaTachometerAlt,
+    FaUsers,
+    FaShoppingCart,
+    FaBoxOpen,
+    FaHistory,
+    FaChartLine,
+    FaUserFriends,
+} from 'react-icons/fa';
 
 const Sidebar = ({ isOpen, onClose }) => {
     const { user } = useAuth();
 
     const navLinks = {
         ADMIN: [
-            { path: '/dashboard', label: 'Dashboard' },
-            { path: '/customers', label: 'Clientes' },
-            { path: '/sales', label: 'Vendas' },
-            { path: '/products', label: 'Produtos' },
-            { path: '/stock-movements', label: 'Histórico de Estoque' },
-            { path: '/users', label: 'Usuários' },
-            { path: '/reports/profitability', label: 'Relatório de Lucro' },
+            {
+                path: '/dashboard',
+                label: 'Dashboard',
+                icon: <FaTachometerAlt />,
+            },
+            { path: '/customers', label: 'Clientes', icon: <FaUserFriends /> },
+            { path: '/sales', label: 'Vendas', icon: <FaShoppingCart /> },
+            { path: '/products', label: 'Produtos', icon: <FaBoxOpen /> },
+            {
+                path: '/stock-movements',
+                label: 'Histórico de Estoque',
+                icon: <FaHistory />,
+            },
+            { path: '/users', label: 'Usuários', icon: <FaUsers /> },
+            {
+                path: '/reports/profitability',
+                label: 'Relatórios',
+                icon: <FaChartLine />,
+            },
         ],
         SELLER: [
-            { path: '/dashboard', label: 'Dashboard' },
-            { path: '/customers', label: 'Clientes' },
-            { path: '/sales', label: 'Minhas Vendas' },
-            { path: '/products', label: 'Visualizar Produtos' },
+            {
+                path: '/dashboard',
+                label: 'Dashboard',
+                icon: <FaTachometerAlt />,
+            },
+            { path: '/customers', label: 'Clientes', icon: <FaUserFriends /> },
+            {
+                path: '/sales',
+                label: 'Minhas Vendas',
+                icon: <FaShoppingCart />,
+            },
+            {
+                path: '/products',
+                label: 'Visualizar Produtos',
+                icon: <FaBoxOpen />,
+            },
         ],
         STOCKCLERK: [
-            { path: '/dashboard', label: 'Dashboard' },
-            { path: '/products', label: 'Produtos' },
-            { path: '/stock-movements', label: 'Histórico de Estoque' },
+            {
+                path: '/dashboard',
+                label: 'Dashboard',
+                icon: <FaTachometerAlt />,
+            },
+            { path: '/products', label: 'Produtos', icon: <FaBoxOpen /> },
+            {
+                path: '/stock-movements',
+                label: 'Histórico de Estoque',
+                icon: <FaHistory />,
+            },
         ],
     };
 
@@ -50,14 +91,14 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <ul>
                     {linksToShow.map((link) => (
                         <li key={link.path}>
-                            {/* Adiciona onClick para fechar o menu ao navegar */}
                             <NavLink
                                 to={link.path}
                                 className={({ isActive }) =>
                                     isActive ? 'active' : ''
                                 }
                                 onClick={onClose}>
-                                {link.label}
+                                {link.icon}
+                                <span>{link.label}</span>
                             </NavLink>
                         </li>
                     ))}

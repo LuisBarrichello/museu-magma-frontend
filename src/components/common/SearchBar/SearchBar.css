@@ -12,3 +12,10 @@
 .search-input {
     min-width: 300px;
 }
+
+.search-and-pagination button {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    justify-content: center;
+}

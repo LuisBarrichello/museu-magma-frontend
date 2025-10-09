@@ -7,6 +7,7 @@ import DetailsModal from '../../components/common/DetailsModal/DetailsModal';
 import './CustomersPage.css';
 import SearchBar from '../../components/common/SearchBar/SearchBar';
 import PaginationControls from '../../components/common/PaginationControls/PaginationControls';
+import { FaPlus, FaEdit, FaTrash, } from 'react-icons/fa';
 
 const customerDetailsConfig = [
     { label: 'ID', key: 'id' },
@@ -112,7 +113,7 @@ const CustomersPage = () => {
             <header className="page-header">
                 <h1>Gerenciamento de Clientes</h1>
                 <button onClick={handleOpenCreateModal} className="add-btn">
-                    + Adicionar Cliente
+                    <FaPlus /> Adicionar Cliente
                 </button>
             </header>
 
@@ -151,6 +152,7 @@ const CustomersPage = () => {
                                             handleOpenEditModal(customer)
                                         }
                                         className="edit-btn">
+                                        <FaEdit />
                                         Editar
                                     </button>
                                     <button
@@ -158,6 +160,7 @@ const CustomersPage = () => {
                                             handleDeleteCustomer(customer.id)
                                         }
                                         className="delete-btn">
+                                        <FaTrash />
                                         Excluir
                                     </button>
                                 </td>
@@ -172,6 +175,7 @@ const CustomersPage = () => {
                 totalPages={totalPages}
                 count={count}
                 setCurrentPage={setCurrentPage}
+                item={"Clientes"}
             />
 
             <CustomerModal

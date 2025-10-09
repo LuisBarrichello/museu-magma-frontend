@@ -5,12 +5,12 @@ const PaginationControls = ({
     currentPage,
     totalPages,
     count,
-    setCurrentPage,
+    setCurrentPage, item
 }) => {
     return (
         <div className="pagination-controls">
             <span>
-                Página {currentPage} de {totalPages} ({count} produtos)
+                Página {currentPage} de {totalPages} ({count} {item})
             </span>
             <div>
                 <button
