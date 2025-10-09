@@ -6,6 +6,7 @@ import DetailsModal from '../../components/common/DetailsModal/DetailsModal';
 import './SalesPage.css';
 import SearchBar from '../../components/common/SearchBar/SearchBar';
 import PaginationControls from '../../components/common/PaginationControls/PaginationControls';
+import { FaPlus } from 'react-icons/fa';
 
 const salesDetailsConfig = [
     { label: 'ID', key: 'id' },
@@ -51,8 +52,8 @@ const SalesPage = () => {
         <div className="sales-page">
             <header className="page-header">
                 <h1>Histórico de Vendas</h1>
-                <Link to="/sales/new" className="new-sale-btn">
-                    + Nova Venda
+                <Link to="/sales/new" className="new-sale-btn" >
+                    <FaPlus /> Nova Venda
                 </Link>
             </header>
 
@@ -100,6 +101,7 @@ const SalesPage = () => {
                 totalPages={totalPages}
                 count={count}
                 setCurrentPage={setCurrentPage}
+                item={"Vendas"}
             />
 
             <DetailsModal

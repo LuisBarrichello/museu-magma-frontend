@@ -100,3 +100,10 @@ td {
         transform: translateY(0);
     }
 }
+
+.action-buttons button {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    justify-content: center;
+}

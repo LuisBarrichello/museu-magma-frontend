@@ -5,6 +5,7 @@ import UserModal from '../../components/UserModal/UserModal';
 import Spinner from '../../components/common/Spinner/Spinner';
 import DetailsModal from '../../components/common/DetailsModal/DetailsModal';
 import './UsersPage.css';
+import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
 const formatFullName = (user) => {
     if (!user) return '';
@@ -98,7 +99,7 @@ const UsersPage = () => {
                 <button
                     onClick={handleOpenCreateModal}
                     className="add-user-btn">
-                    + Adicionar Usuário
+                    <FaPlus /> Adicionar Usuário
                 </button>
             </header>
 
@@ -129,6 +130,7 @@ const UsersPage = () => {
                                             handleOpenEditModal(user)
                                         }
                                         className="edit-btn">
+                                        <FaEdit />
                                         Editar
                                     </button>
                                     <button
@@ -136,6 +138,7 @@ const UsersPage = () => {
                                             handleDeleteUser(user.id)
                                         }
                                         className="delete-btn">
+                                        <FaTrash />
                                         Excluir
                                     </button>
                                 </td>

@@ -9,6 +9,7 @@ import DetailsModal from '../../components/common/DetailsModal/DetailsModal';
 import StockMovementModal from '../../components/StockMovementModal/StockMovementModal';
 import SearchBar from '../../components/common/SearchBar/SearchBar';
 import PaginationControls from '../../components/common/PaginationControls/PaginationControls';
+import { FaPlus, FaEdit, FaTrash, FaBoxOpen, FaSyncAlt } from 'react-icons/fa';
 
 const productDetailsConfig = [
     { label: 'Nome', key: 'name' },
@@ -65,7 +66,7 @@ const ProductsPage = () => {
     const {
         data: products,
         setData: setProducts,
-        count, 
+        count,
         loading,
         error,
     } = useApi('/products/', apiParams);
@@ -76,7 +77,7 @@ const ProductsPage = () => {
 
     const handleOpenCreateModal = () => {
         setModalState({ type: 'create', data: null });
-    }
+    };
 
     const handleOpenEditModal = (product) => {
         setModalState({ type: 'edit', data: product });
@@ -108,10 +109,13 @@ const ProductsPage = () => {
                     ),
                 );
             } else {
-                const response = await apiClient.post('/products/', productData);
+                const response = await apiClient.post(
+                    '/products/',
+                    productData,
+                );
                 setProducts((prevProducts) => [response.data, ...prevProducts]);
             }
-            
+
             setModalState({ type: null, data: null });
         } catch (error) {
             console.error('Falha ao criar produto:', error.response?.data);
@@ -133,7 +137,7 @@ const ProductsPage = () => {
             setProducts(
                 products.map((p) => (p.id === productId ? response.data : p)),
             );
-            setModalState({ type: null, data: null }); 
+            setModalState({ type: null, data: null });
         } catch (err) {
             setSaveError(
                 err.message || 'Não foi possível registrar a movimentação.',
@@ -143,7 +147,7 @@ const ProductsPage = () => {
 
     const canManageProducts =
         user?.user_type === 'ADMIN' || user?.user_type === 'STOCKCLERK';
-    
+
     if (loading) {
         return <Spinner />;
     }
@@ -160,7 +164,7 @@ const ProductsPage = () => {
                     <button
                         className="add-product-btn"
                         onClick={handleOpenCreateModal}>
-                        + Adicionar Produto
+                        <FaPlus /> Adicionar Produto
                     </button>
                 )}
             </header>
@@ -213,6 +217,7 @@ const ProductsPage = () => {
                                                 })
                                             }
                                             className="move-btn">
+                                            <FaSyncAlt />
                                             Movimentar
                                         </button>
                                         <button
@@ -220,6 +225,7 @@ const ProductsPage = () => {
                                                 handleOpenEditModal(product)
                                             }
                                             className="edit-btn">
+                                            <FaEdit />
                                             Editar
                                         </button>
                                         <button
@@ -227,6 +233,7 @@ const ProductsPage = () => {
                                                 handleDeleteProduct(product.id)
                                             }
                                             className="delete-btn">
+                                            <FaTrash />
                                             Excluir
                                         </button>
                                     </td>
@@ -242,6 +249,7 @@ const ProductsPage = () => {
                 totalPages={totalPages}
                 count={count}
                 setCurrentPage={setCurrentPage}
+                item={"Produtos"}
             />
 
             <ProductModal

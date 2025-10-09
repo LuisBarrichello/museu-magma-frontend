@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './SearchBar.css';
+import { FaSearch } from 'react-icons/fa';
 
 const SearchBar = ({ onSearchChange, setCurrentPage }) => {
     const [query, setQuery] = useState('');
@@ -22,7 +23,10 @@ const SearchBar = ({ onSearchChange, setCurrentPage }) => {
                 onChange={handleInputChange}
                 className="search-input"
             />
-            <button type="submit">Buscar</button>
+            <button type="submit">
+                <FaSearch />
+                Buscar
+            </button>
         </form>
     );
 };

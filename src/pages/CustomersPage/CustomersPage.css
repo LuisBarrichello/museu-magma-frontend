@@ -25,3 +25,10 @@
     padding: 1.5rem;
     overflow-x: auto;
 }
+
+.action-buttons button {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    justify-content: center;
+}
