@@ -50,45 +50,39 @@ const StockMovementsPage = () => {
             </form>
 
             <div className="list-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>ID produto</th>
-                            <th>Produto</th>
-                            <th>Tipo</th>
-                            <th>Quantidade</th>
-                            <th>Custo Unit.</th>
-                            <th>Usuário</th>
-                            <th>Observações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {movements.map((mov) => (
-                            <tr key={mov.id}>
-                                <td>
-                                    {new Date(mov.timestamp).toLocaleString(
-                                        'pt-BR',
-                                    )}
-                                </td>
-                                <td>{mov.product}</td>
-                                <td>{mov.product_name}</td>
-                                <td>
-                                    <span
-                                        className={`type-badge ${getMovementTypeClass(
-                                            mov.type,
-                                        )}`}>
-                                        {mov.type_display}
-                                    </span>
-                                </td>
-                                <td>{mov.quantity}</td>
-                                <td>R$ {mov.cost_price}</td>
-                                <td>{mov.user_name}</td>
-                                <td>{mov.notes}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                {movements.map((mov) => (
+                    <div key={mov.id} className="movement-card">
+                        <div className="movement-row">
+                            <div className="movement-field">
+                                <span>Data:</span> {new Date(mov.timestamp).toLocaleString('pt-BR')}
+                            </div>
+                            <div className="movement-field">
+                                <span>ID Produto:</span> {mov.product}
+                            </div>
+                            <div className="movement-field">
+                                <span>Produto:</span> {mov.product_name}
+                            </div>
+                        </div>
+                        <div className="movement-row">
+                            <div className="movement-field">
+                                <span>Tipo:</span>{' '}
+                                <span className={`type-badge ${getMovementTypeClass(mov.type)}`}>
+                                    {mov.type_display}
+                                </span>
+                            </div>
+                            <div className="movement-field">
+                                <span>Quantidade:</span> {mov.quantity}
+                            </div>
+                            <div className="movement-field">
+                                <span>Custo Unit.:</span> R$ {mov.cost_price}
+                            </div>
+                        </div>
+                        <div className="movement-row">
+                            <div className="movement-field"><span>Usuário:</span> {mov.user_name}</div>
+                            <div className="movement-field"><span>Observações:</span> {mov.notes}</div>
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );

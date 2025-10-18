@@ -25,7 +25,7 @@ const NewSalePage = () => {
             apiClient.get(`/products/?search=${productSearch}`)
                 .then(res => setSearchResults(res.data.results))
                 .catch(err => console.error('Failed to fetch products', err));
-        }, 300); // Debounce for 300ms
+        }, 300);
         return () => clearTimeout(dalayDebounceFn);
     }, [productSearch])
 
@@ -48,7 +48,6 @@ const NewSalePage = () => {
     const addProductToCart = (product) => {
         setCart(currentCart => {
             const existingItem = currentCart.find(item => item.id === product.id);
-
             if (existingItem) {
                 return currentCart.map(item =>
                     item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
@@ -105,19 +104,16 @@ const NewSalePage = () => {
             <header className="page-header">
                 <h1>Registrar Nova Venda</h1>
             </header>
-            <div className="sale-layout">
-                {/* Column Left: search products */}
-                <div className="product-search-column">
-                    {/* --- BUSCA DE CLIENTES (NOVO) --- */}
+            <div className="sale-layout" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                {/* Column Left: search products and customer */}
+                <div style={{ flex: '1 1 300px', minWidth: '300px' }}>
+                    {/* --- BUSCA DE CLIENTES --- */}
                     <div className="customer-search-section">
                         <h3>Associar Cliente (Opcional)</h3>
                         {selectedCustomer ? (
                             <div className="selected-customer">
                                 <span>{selectedCustomer.name}</span>
-                                <button
-                                    onClick={() => setSelectedCustomer(null)}>
-                                    Remover
-                                </button>
+                                <button onClick={() => setSelectedCustomer(null)}>Remover</button>
                             </div>
                         ) : (
                             <>
@@ -125,33 +121,22 @@ const NewSalePage = () => {
                                     type="text"
                                     placeholder="Buscar cliente por nome ou documento..."
                                     value={customerSearch}
-                                    onChange={(e) =>
-                                        setCustomerSearch(e.target.value)
-                                    }
+                                    onChange={(e) => setCustomerSearch(e.target.value)}
                                 />
                                 {customerSearchResults.length > 0 && (
                                     <ul className="search-results">
-                                        {customerSearchResults.map(
-                                            (customer) => (
-                                                <li
-                                                    key={customer.id}
-                                                    onClick={() =>
-                                                        handleSelectCustomer(
-                                                            customer,
-                                                        )
-                                                    }>
-                                                    {customer.name}{' '}
-                                                    <span>
-                                                        ({customer.document})
-                                                    </span>
-                                                </li>
-                                            ),
-                                        )}
+                                        {customerSearchResults.map((customer) => (
+                                            <li key={customer.id} onClick={() => handleSelectCustomer(customer)}>
+                                                {customer.name} <span>({customer.document})</span>
+                                            </li>
+                                        ))}
                                     </ul>
                                 )}
                             </>
                         )}
                     </div>
+
+                    {/* Search Products */}
                     <div className="product-search-section">
                         <h3>Buscar Produto</h3>
                         <input
@@ -163,15 +148,8 @@ const NewSalePage = () => {
                         {searchResults.length > 0 && (
                             <ul className="search-results">
                                 {searchResults.map((product) => (
-                                    <li
-                                        key={product.id}
-                                        onClick={() =>
-                                            addProductToCart(product)
-                                        }>
-                                        {product.name}{' '}
-                                        <span>
-                                            (Estoque: {product.quantity})
-                                        </span>
+                                    <li key={product.id} onClick={() => addProductToCart(product)}>
+                                        {product.name} <span>(Estoque: {product.quantity})</span>
                                     </li>
                                 ))}
                             </ul>
@@ -179,8 +157,8 @@ const NewSalePage = () => {
                     </div>
                 </div>
 
-                {/* Column Right: cart and finalize sale */}
-                <div className="cart-column">
+                {/* Column Right: cart */}
+                <div style={{ flex: '1 1 300px', minWidth: '300px' }}>
                     <h3>Itens da Venda</h3>
                     <div className="cart-items">
                         {cart.length === 0 ? (
@@ -193,22 +171,12 @@ const NewSalePage = () => {
                                         <input
                                             type="number"
                                             value={item.quantity}
-                                            onChange={(e) =>
-                                                updateQuantity(
-                                                    item.id,
-                                                    parseFloat(e.target.value),
-                                                )
-                                            }
+                                            onChange={(e) => updateQuantity(item.id, parseFloat(e.target.value))}
                                             min="0"
                                         />
                                         <span>x R$ {item.sale_price}</span>
                                     </div>
-                                    <strong>
-                                        R${' '}
-                                        {(
-                                            item.sale_price * item.quantity
-                                        ).toFixed(2)}
-                                    </strong>
+                                    <strong>R$ {(item.sale_price * item.quantity).toFixed(2)}</strong>
                                 </div>
                             ))
                         )}
@@ -216,44 +184,31 @@ const NewSalePage = () => {
 
                     <div className="sale-summary">
                         <div>
-                            <span>Subtotal:</span>{' '}
-                            <strong>R$ {subtotal.toFixed(2)}</strong>
+                            <span>Subtotal:</span> <strong>R$ {subtotal.toFixed(2)}</strong>
                         </div>
                         <div>
                             <label>Desconto (R$):</label>
                             <input
                                 type="number"
                                 value={discount}
-                                onChange={(e) =>
-                                    setDiscount(parseFloat(e.target.value) || 0)
-                                }
+                                onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
                                 min="0"
                             />
                         </div>
                         <hr />
                         <div className="total">
-                            <span>TOTAL:</span>{' '}
-                            <strong>R$ {total.toFixed(2)}</strong>
+                            <span>TOTAL:</span> <strong>R$ {total.toFixed(2)}</strong>
                         </div>
                         <div>
                             <label>Método de Pagamento:</label>
-                            <select
-                                value={paymentMethod}
-                                onChange={(e) =>
-                                    setPaymentMethod(e.target.value)
-                                }>
+                            <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
                                 <option value="PIX">Pix</option>
-                                <option value="CREDIT">
-                                    Cartão de Crédito
-                                </option>
+                                <option value="CREDIT">Cartão de Crédito</option>
                                 <option value="DEBIT">Cartão de Débito</option>
                                 <option value="CASH">Dinheiro</option>
                             </select>
                         </div>
-                        <button
-                            onClick={handleFinalizeSale}
-                            className="finalize-btn"
-                            disabled={cart.length === 0}>
+                        <button onClick={handleFinalizeSale} className="finalize-btn" disabled={cart.length === 0}>
                             Finalizar Venda
                         </button>
                     </div>

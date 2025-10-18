@@ -22,19 +22,12 @@ const salesDetailsConfig = [
     { label: 'Notas', key: 'notes' },
 ];
 
-// const salesItemsConfig = [
-//     { label: 'ID do Item', key: 'id' },
-//     { label: 'Produto', key: 'product_name' },
-//     { label: 'Quantidade', key: 'quantity' },
-//     { label: 'Preço Unitário', key: 'unit_price' },
-// ];
-
 const SalesPage = () => {
     const { data: sales, loading, error } = useApi('/sales/');
     const [modalState, setModalState] = useState({ type: null, data: null });
 
-    const handleRowClick = (product) => {
-        setModalState({ type: 'details', data: product });
+    const handleRowClick = (sale) => {
+        setModalState({ type: 'details', data: sale });
     };
 
     if (loading) return <Spinner />;
@@ -48,38 +41,26 @@ const SalesPage = () => {
                     + Nova Venda
                 </Link>
             </header>
+
             <div className="list-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID Venda</th>
-                            <th>Data</th>
-                            <th>Cliente</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Vendedor</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {sales.map((sale) => (
-                            <tr
-                                key={sale.id}
-                                onClick={() => handleRowClick(sale)}
-                                className="clickable-row">
-                                <td>#{sale.id}</td>
-                                <td>
-                                    {new Date(
-                                        sale.sale_date,
-                                    ).toLocaleDateString('pt-BR')}
-                                </td>
-                                <td>{sale.customer_name || 'N/A'}</td>
-                                <td>R$ {sale.total_amount}</td>
-                                <td>{sale.status_display}</td>
-                                <td>{sale.created_by_name}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                {sales.map((sale) => (
+                    <div
+                        key={sale.id}
+                        className="sale-card"
+                        onClick={() => handleRowClick(sale)}
+                    >
+                        <div className="sale-row">
+                            <div className="sale-field"><span>ID:</span> #{sale.id}</div>
+                            <div className="sale-field"><span>Data:</span> {new Date(sale.sale_date).toLocaleDateString('pt-BR')}</div>
+                            <div className="sale-field"><span>Cliente:</span> {sale.customer_name || 'N/A'}</div>
+                        </div>
+                        <div className="sale-row">
+                            <div className="sale-field"><span>Total:</span> R$ {sale.total_amount}</div>
+                            <div className="sale-field"><span>Status:</span> {sale.status_display}</div>
+                            <div className="sale-field"><span>Vendedor:</span> {sale.created_by_name}</div>
+                        </div>
+                    </div>
+                ))}
             </div>
 
             <DetailsModal

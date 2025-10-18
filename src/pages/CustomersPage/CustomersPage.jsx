@@ -22,57 +22,27 @@ const customerDetailsConfig = [
 ];
 
 const CustomersPage = () => {
-    const {
-        data: customers,
-        setData: setCustomers,
-        loading,
-        error,
-    } = useApi('/customers/');
+    const { data: customers, setData: setCustomers, loading, error } = useApi('/customers/');
     const [actionError, setActionError] = useState(null);
     const [modalState, setModalState] = useState({ type: null, data: null });
 
-    const handleRowClick = (customer) => {
-        setModalState({ type: 'details', data: customer });
-    };
-
-    const handleOpenCreateModal = () => {
-        setModalState({ type: 'create', data: null });
-    };
-
-    const handleOpenEditModal = (customer) => {
-        setModalState({ type: 'edit', data: customer });
-    };
+    const handleRowClick = (customer) => setModalState({ type: 'details', data: customer });
+    const handleOpenCreateModal = () => setModalState({ type: 'create', data: null });
+    const handleOpenEditModal = (customer) => setModalState({ type: 'edit', data: customer });
 
     const handleSaveCustomer = async (customerData, customerId) => {
         try {
             setActionError(null);
             if (customerId) {
-                const response = await apiClient.patch(
-                    `/customers/${customerId}/`,
-                    customerData,
-                );
-                setCustomers(
-                    customers.map((c) =>
-                        c.id === customerId ? response.data : c,
-                    ),
-                );
-                setModalState({ type: null, data: null });
+                const response = await apiClient.patch(`/customers/${customerId}/`, customerData);
+                setCustomers(customers.map(c => c.id === customerId ? response.data : c));
             } else {
-                const response = await apiClient.post(
-                    '/customers/',
-                    customerData,
-                );
-                setCustomers((prevCustomers) => [
-                    response.data,
-                    ...prevCustomers,
-                ]);
-                setModalState({ type: null, data: null });
+                const response = await apiClient.post('/customers/', customerData);
+                setCustomers(prev => [response.data, ...prev]);
             }
-        } catch (error) {
-            setActionError(
-                error.message ||
-                    'Não foi possível salvar o cliente. Verifique os dados.',
-            );
+            setModalState({ type: null, data: null });
+        } catch (err) {
+            setActionError(err.message || 'Não foi possível salvar o cliente. Verifique os dados.');
         }
     };
 
@@ -80,11 +50,9 @@ const CustomersPage = () => {
         if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
             try {
                 await apiClient.delete(`/customers/${customerId}/`);
-                setCustomers(customers.filter((c) => c.id !== customerId));
-            } catch (error) {
-                setActionError(
-                    error.message || 'Não foi possível excluir o cliente.',
-                );
+                setCustomers(customers.filter(c => c.id !== customerId));
+            } catch (err) {
+                setActionError(err.message || 'Não foi possível excluir o cliente.');
             }
         }
     };
@@ -96,65 +64,31 @@ const CustomersPage = () => {
         <div className="customers-page">
             <header className="page-header">
                 <h1>Gerenciamento de Clientes</h1>
-                <button onClick={handleOpenCreateModal} className="add-btn">
-                    + Adicionar Cliente
-                </button>
+                <button onClick={handleOpenCreateModal} className="add-btn">+ Adicionar Cliente</button>
             </header>
+
             {actionError && <div className="error-message">{actionError}</div>}
+
             <div className="list-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nome / Razão Social</th>
-                            <th>Documento</th>
-                            <th>Email</th>
-                            <th>Telefone</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {customers.map((customer) => (
-                            <tr
-                                key={customer.id}
-                                onClick={() => handleRowClick(customer)}
-                                className="clickable-row">
-                                <td>{customer.name}</td>
-                                <td>{customer.document}</td>
-                                <td>{customer.email}</td>
-                                <td>{customer.phone}</td>
-                                <td
-                                    className="action-buttons"
-                                    onClick={(e) => e.stopPropagation()}>
-                                    <button
-                                        onClick={() =>
-                                            handleOpenEditModal(customer)
-                                        }
-                                        className="edit-btn">
-                                        Editar
-                                    </button>
-                                    <button
-                                        onClick={() =>
-                                            handleDeleteCustomer(customer.id)
-                                        }
-                                        className="delete-btn">
-                                        Excluir
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                {customers.map(customer => (
+                    <div key={customer.id} className="customer-card" onClick={() => handleRowClick(customer)}>
+                        <div className="customer-field"><span>Nome:</span> {customer.name}</div>
+                        <div className="customer-field"><span>Documento:</span> {customer.document}</div>
+                        <div className="customer-field"><span>Email:</span> {customer.email}</div>
+                        <div className="customer-field"><span>Telefone:</span> {customer.phone}</div>
+                        <div className="action-buttons" onClick={e => e.stopPropagation()}>
+                            <button onClick={() => handleOpenEditModal(customer)} className="edit-btn">Editar</button>
+                            <button onClick={() => handleDeleteCustomer(customer.id)} className="delete-btn">Excluir</button>
+                        </div>
+                    </div>
+                ))}
             </div>
 
             <CustomerModal
-                isOpen={
-                    modalState.type === 'create' || modalState.type === 'edit'
-                }
+                isOpen={modalState.type === 'create' || modalState.type === 'edit'}
                 onClose={() => setModalState({ type: null, data: null })}
                 onSave={handleSaveCustomer}
-                customerToEdit={
-                    modalState.type === 'edit' ? modalState.data : null
-                }
+                customerToEdit={modalState.type === 'edit' ? modalState.data : null}
             />
 
             <DetailsModal

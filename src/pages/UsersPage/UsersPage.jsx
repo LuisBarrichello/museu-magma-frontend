@@ -39,10 +39,6 @@ const UsersPage = () => {
     const [saveError, setSaveError] = useState(null);
     const [modalState, setModalState] = useState({ type: null, data: null });
 
-    const handleRowClick = (user) => {
-        setModalState({ type: 'details', data: user });
-    };
-
     const handleOpenCreateModal = () => {
         setModalState({ type: 'create', data: null });
     };
@@ -102,53 +98,62 @@ const UsersPage = () => {
                 </button>
             </header>
 
-            <div className="users-list-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Usuário</th>
-                            <th>Nome Completo</th>
-                            <th>Email</th>
-                            <th>Tipo</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user) => (
-                            <tr
-                                key={user.id}
-                                onClick={() => handleRowClick(user)}
-                                className="clickable-row">
-                                <td>{user.username}</td>
-                                <td>{`${user.first_name} ${user.last_name}`}</td>
-                                <td>{user.email}</td>
-                                <td>{user.user_type_display}</td>
-                                <td className="action-buttons">
-                                    <button
-                                        onClick={() =>
-                                            handleOpenEditModal(user)
-                                        }
-                                        className="edit-btn">
-                                        Editar
-                                    </button>
-                                    <button
-                                        onClick={() =>
-                                            handleDeleteUser(user.id)
-                                        }
-                                        className="delete-btn">
-                                        Excluir
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div className="users-cards-container">
+                {users.map((user) => (
+                    <div
+                        key={user.id}
+                        className="user-card"
+                        onClick={() => setModalState({ type: 'details', data: user })}
+                    >
+                        {/* Linha 1 */}
+                        <div className="user-card-row">
+                            <div className="user-card-field">
+                                <span>Usuário:</span> {user.username}
+                            </div>
+                            <div className="user-card-field">
+                                <span>Nome Completo:</span> {formatFullName(user)}
+                            </div>
+                            <div className="user-card-field">
+                                <span>Email:</span> {user.email}
+                            </div>
+                        </div>
+                        {/* Linha 2 */}
+                        <div className="user-card-row">
+                            <div className="user-card-field">
+                                <span>Tipo:</span> {user.user_type_display}
+                            </div>
+                            <div className="user-card-field">
+                                <span>Saldo:</span> R$ {user.balance}
+                            </div>
+                            <div className="user-card-field">
+                                <span>Status:</span> {user.is_active ? 'Ativo' : 'Inativo'}
+                            </div>
+                        </div>
+
+                        {/* Ações */}
+                        <div
+                            className="user-card-actions"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <button
+                                onClick={() => handleOpenEditModal(user)}
+                                className="edit-btn"
+                            >
+                                Editar
+                            </button>
+                            <button
+                                onClick={() => handleDeleteUser(user.id)}
+                                className="delete-btn"
+                            >
+                                Excluir
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
 
             <UserModal
-                isOpen={
-                    modalState.type === 'create' || modalState.type === 'edit'
-                }
+                isOpen={modalState.type === 'create' || modalState.type === 'edit'}
                 onClose={() => setModalState({ type: null, data: null })}
                 onSave={handleSaveUser}
                 userToEdit={modalState.data}

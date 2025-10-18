@@ -1,27 +1,90 @@
-.customers-page { 
+.customers-page {
     animation: fadeIn 0.5s ease-in-out;
+    padding: 1rem;
 }
 
-.page-header { 
+.page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--color-border);
+    gap: 1rem;
 }
 
-.page-header h1 { 
+.page-header h1 {
     margin: 0;
 }
 
-.add-btn { 
+.add-btn {
     font-size: 0.9em;
 }
 
-.list-container { 
-    background-color: var(--color-background-light);
+.error-message {
+    color: red;
+    margin-bottom: 1rem;
+}
+
+/* Lista de clientes como flex container */
+.list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Cada cliente é um "card flex" */
+.customer-card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
-    padding: 1.5rem;
-    overflow-x: auto;
+    background-color: var(--color-background-light);
+    cursor: pointer;
+}
+
+/* Cada campo do cliente */
+.customer-field {
+    flex: 1 1 200px; /* cresce e encolhe */
+    margin: 0.25rem 0;
+    word-wrap: break-word;
+}
+
+.customer-field span {
+    font-weight: bold;
+    margin-right: 0.25rem;
+}
+
+/* Botões de ação */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex: 1 1 100%;
+    justify-content: flex-end;
+}
+
+/* Ajuste para telas pequenas */
+@media (max-width: 600px) {
+    .customer-field {
+        flex: 1 1 100%;
+    }
+    .action-buttons {
+        justify-content: flex-start;
+    }
+
+    
+}
+
+/* Para telas pequenas (mobile) */
+@media (max-width: 600px) {
+    .page-header {
+        flex-direction: column; /* empilha título e botão */
+        align-items: flex-start; /* alinha tudo à esquerda */
+    }
+    .add-btn {
+        width: 100%; /* botão ocupa toda a largura */
+        text-align: center;
+    }
 }

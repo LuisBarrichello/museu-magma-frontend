@@ -1,5 +1,6 @@
 .products-page {
     animation: fadeIn 0.5s ease-in-out;
+    padding: 1rem;
 }
 
 .page-header {
@@ -18,81 +19,67 @@
 
 .add-product-btn {
     font-size: 0.9em;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
 }
 
 .products-list-container {
-    background-color: var(--color-background-light);
-    border-radius: 8px;
-    padding: 1.5rem;
-    overflow-x: auto; /* Para tabelas em telas pequenas */
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-}
-
-thead {
-    border-bottom: 2px solid var(--color-border);
-}
-
-th {
-    padding: 0.75rem 1rem;
-    color: var(--color-accent);
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.85em;
-}
-
-tbody tr {
-    border-bottom: 1px solid var(--color-border);
-    transition: background-color 0.2s;
-}
-
-tbody tr:last-child {
-    border-bottom: none;
-}
-
-tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.03);
-}
-
-td {
-    padding: 1rem;
-    vertical-align: middle;
-}
-
-.action-buttons {
     display: flex;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.action-buttons button {
-    padding: 0.4em 0.8em;
-    font-size: 0.85em;
-}
-
-.edit-btn {
-    background-color: var(--color-accent);
-    color: var(--color-background);
-}
-
-.delete-btn {
-    background-color: var(--color-error);
-}
-
-.clickable-row {
+/* Card flex para produtos */
+.product-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-background-light);
     cursor: pointer;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
+.product-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.product-field {
+    flex: 1 1 30%;
+    min-width: 120px;
+    word-wrap: break-word;
+}
+
+.product-field span {
+    font-weight: bold;
+}
+
+/* Responsivo: centraliza o botão e empilha os campos em telas pequenas */
+@media (max-width: 600px) {
+    .page-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+
+    .add-product-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .product-row {
+        flex-direction: column;
+    }
+
+    .product-field {
+        flex: 1 1 100%;
     }
 }

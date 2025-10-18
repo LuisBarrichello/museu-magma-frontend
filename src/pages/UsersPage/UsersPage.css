@@ -1,6 +1,8 @@
 .users-page {
     animation: fadeIn 0.5s ease-in-out;
+    padding: 1rem;
 }
+
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -9,62 +11,103 @@
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--color-border);
 }
+
 .page-header h1 {
     margin: 0;
+    color: var(--color-text);
 }
+
+/* Botão igual ao adicionar produto */
 .add-user-btn {
     font-size: 0.9em;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
 }
-.users-list-container {
-    background-color: var(--color-background-light);
-    border-radius: 8px;
-    padding: 1.5rem;
-    overflow-x: auto;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-}
-thead {
-    border-bottom: 2px solid var(--color-border);
-}
-th {
-    padding: 0.75rem 1rem;
-    color: var(--color-accent);
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.85em;
-}
-tbody tr {
-    border-bottom: 1px solid var(--color-border);
-    transition: background-color 0.2s;
-}
-tbody tr:last-child {
-    border-bottom: none;
-}
-tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.03);
-}
-td {
-    padding: 1rem;
-    vertical-align: middle;
-}
-.action-buttons {
+
+.users-cards-container {
     display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Card flex para usuários */
+.user-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-background-light);
+    cursor: pointer;
+}
+
+.user-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* Rows internas do card */
+.user-card-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 0.5rem;
 }
-.action-buttons button {
-    padding: 0.4em 0.8em;
-    font-size: 0.85em;
+
+.user-card-field {
+    flex: 1 1 30%;
+    min-width: 120px;
+    word-wrap: break-word;
 }
+
+.user-card-field span {
+    font-weight: bold;
+}
+
+/* Botões de ação */
+.user-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
 .edit-btn {
     background-color: var(--color-accent);
     color: var(--color-background);
 }
+
 .delete-btn {
     background-color: var(--color-error);
 }
+
+/* Responsivo: adapta cards e botão para celular */
+@media (max-width: 600px) {
+    .page-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .add-user-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .user-card-row {
+        flex-direction: column;
+    }
+
+    .user-card-field {
+        flex: 1 1 100%;
+    }
+}
+
+/* Animação */
 @keyframes fadeIn {
     from {
         opacity: 0;

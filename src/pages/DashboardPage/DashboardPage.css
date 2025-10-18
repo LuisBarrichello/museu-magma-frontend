@@ -1,5 +1,21 @@
 .dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.dashboard-grid > * {
+  flex: 0 1 1000px; 
+}
+
+/* Ajustes por breakpoint */
+@media (max-width: 767px) {
+  .dashboard-grid > * {
+    flex: 1 1 250px;
+    max-width: 100%;
+  }
 }
