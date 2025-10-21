@@ -55,6 +55,7 @@ const StockMovementsPage = () => {
             <SearchBar
                 onSearchChange={setSearchTerm}
                 setCurrentPage={setCurrentPage}
+                placeholder={'Buscar por nome do produto, criador ou notas...'}
             />
 
             <div className="list-container">
@@ -103,7 +104,7 @@ const StockMovementsPage = () => {
                 totalPages={totalPages}
                 count={count}
                 setCurrentPage={setCurrentPage}
-                item={"Movimentações"}
+                item={'Movimentações'}
             />
         </div>
     );

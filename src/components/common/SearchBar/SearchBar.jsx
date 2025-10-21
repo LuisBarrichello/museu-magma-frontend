@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './SearchBar.css';
 import { FaSearch } from 'react-icons/fa';
 
-const SearchBar = ({ onSearchChange, setCurrentPage }) => {
+const SearchBar = ({ onSearchChange, setCurrentPage, placeholder }) => {
     const [query, setQuery] = useState('');
     const handleInputChange = (e) => {
         setQuery(e.target.value);
@@ -19,7 +19,7 @@ const SearchBar = ({ onSearchChange, setCurrentPage }) => {
             <input
                 type="text"
                 value={query}
-                placeholder="Buscar por nome, código ou descrição..."
+                placeholder={placeholder}
                 onChange={handleInputChange}
                 className="search-input"
             />

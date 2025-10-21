@@ -120,6 +120,7 @@ const CustomersPage = () => {
             <SearchBar
                 onSearchChange={setSearchTerm}
                 setCurrentPage={setCurrentPage}
+                placeholder={'Buscar por nome, documento ou email...'}
             />
 
             {actionError && <div className="error-message">{actionError}</div>}
@@ -175,7 +176,7 @@ const CustomersPage = () => {
                 totalPages={totalPages}
                 count={count}
                 setCurrentPage={setCurrentPage}
-                item={"Clientes"}
+                item={'Clientes'}
             />
 
             <CustomerModal

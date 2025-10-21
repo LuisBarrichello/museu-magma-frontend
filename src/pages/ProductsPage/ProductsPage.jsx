@@ -172,6 +172,7 @@ const ProductsPage = () => {
             <SearchBar
                 onSearchChange={setSearchTerm}
                 setCurrentPage={setCurrentPage}
+                placeholder={"Buscar por nome, código ou descrição..."}
             />
 
             {error && <div className="error-message">{error}</div>}

@@ -60,6 +60,7 @@ const SalesPage = () => {
             <SearchBar
                 onSearchChange={setSearchTerm}
                 setCurrentPage={setCurrentPage}
+                placeholder={"Buscar por cliente, criador, notas ou ID"}
             />
 
             <div className="list-container">
