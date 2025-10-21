@@ -1,0 +1,38 @@
+.search-and-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.search-and-pagination button {
+    margin-left: .5rem;
+}
+
+.search-input {
+    min-width: 300px;
+}
+
+.search-and-pagination button {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    justify-content: center;
+}
+
+@media (max-width: 480px) {
+    .search-and-pagination {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .search-and-pagination button {
+        margin-left: 0;
+    }
+
+    .search-input {
+        min-width: auto;
+        width: 100%;
+    }
+}
