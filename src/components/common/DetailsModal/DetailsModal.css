@@ -48,3 +48,27 @@
     font-size: 1.1em;
     font-weight: 500;
 }
+
+@media (max-width: 768px) {
+    .modal-content.details-modal {
+        width: 95%;
+        margin: 1rem;
+        max-height: 90vh; 
+        overflow-y: auto;
+        animation: none; 
+    }
+
+    .details-modal-body {
+        grid-template-columns: 1fr;
+        gap: 0.5rem; 
+    }
+    
+    .details-modal-header {
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .close-btn {
+        font-size: 1.5rem;
+    }
+}

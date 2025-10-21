@@ -1,6 +1,11 @@
+.report-page {
+    animation: fadeIn 0.5s ease-in-out;
+    padding: 0.5rem;
+}
+
 .report-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
 }
 
@@ -14,6 +19,6 @@
 .chart-container h3 {
     text-align: center;
     margin-top: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     color: var(--color-text);
 }

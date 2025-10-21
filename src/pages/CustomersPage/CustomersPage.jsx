@@ -188,6 +188,7 @@ const CustomersPage = () => {
                     modalState.type === 'edit' ? modalState.data : null
                 }
             />
+
             <DetailsModal
                 isOpen={modalState.type === 'details'}
                 onClose={() => setModalState({ type: null, data: null })}

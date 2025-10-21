@@ -19,3 +19,20 @@
     gap: 0.4rem;
     justify-content: center;
 }
+
+@media (max-width: 480px) {
+    .search-and-pagination {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .search-and-pagination button {
+        margin-left: 0;
+    }
+
+    .search-input {
+        min-width: auto;
+        width: 100%;
+    }
+}

@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (username, password) => {
-        console.log('Attempting to log in with:', { username, password }); 
         try {
             const response = await apiClient.post('/token/', {
                 username,
