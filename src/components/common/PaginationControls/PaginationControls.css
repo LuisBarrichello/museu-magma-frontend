@@ -9,3 +9,26 @@
 .pagination-controls button {
     margin-left: 0.5rem;
 }
+
+@media (max-width: 480px) {
+    .pagination-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .pagination-controls span {
+        text-align: center;
+    }
+
+    .pagination-controls div {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        gap: 1rem;
+    }
+
+    .pagination-controls button {
+        margin-left: 0;
+    }
+}
