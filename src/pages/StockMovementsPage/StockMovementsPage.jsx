@@ -12,7 +12,7 @@ const StockMovementsPage = () => {
         : '/stock-movements/';
     
     const [currentPage, setCurrentPage] = useState(1);
-    const PAGE_SIZE = 5;
+    const PAGE_SIZE = 15;
 
     const apiParams = useMemo(
             () => ({

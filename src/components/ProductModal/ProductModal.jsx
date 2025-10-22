@@ -24,6 +24,7 @@ const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
         quantity: '',
         category: 'OTHER',
         unit_of_measure: 'UNIT',
+        supplier: '',
     });
 
     useEffect(() => {
@@ -35,6 +36,7 @@ const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
                 quantity: productToEdit.quantity || '',
                 category: productToEdit.category || 'OTHER',
                 unit_of_measure: productToEdit.unit_of_measure || 'UNIT',
+                supplier: productToEdit.supplier || '',
             });
         } else {
             setFormData({
@@ -44,6 +46,7 @@ const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
                 quantity: '',
                 category: 'OTHER',
                 unit_of_measure: 'UNIT',
+                supplier: '',
             });
         }
     }, [productToEdit, isOpen])
@@ -55,7 +58,7 @@ const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSave(formData);
+        onSave(formData, productToEdit ? productToEdit.id : null);
     };
 
     if (!isOpen) {

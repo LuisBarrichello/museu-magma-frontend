@@ -124,7 +124,9 @@ const UsersPage = () => {
                                 <td>{`${user.first_name} ${user.last_name}`}</td>
                                 <td>{user.email}</td>
                                 <td>{user.user_type_display}</td>
-                                <td className="action-buttons">
+                                <td
+                                    className="action-buttons"
+                                    onClick={(e) => e.stopPropagation()}>
                                     <button
                                         onClick={() =>
                                             handleOpenEditModal(user)
