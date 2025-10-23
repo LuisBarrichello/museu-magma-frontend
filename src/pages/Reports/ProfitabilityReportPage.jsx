@@ -46,14 +46,42 @@ const ProfitabilityReportPage = () => {
             return acc;
         }, {});
 
+        const productCostMap = products.reduce((acc, product) => {
+            acc[product.id] = parseFloat(product.cost_price);
+            return acc;
+        }, {});
+
         const profitByCategory = sales.reduce((acc, sale) => {
-            const saleProfit =
-                parseFloat(sale.total_amount) - parseFloat(sale.total_cost);
+            let saleSubtotal = 0;
 
             for (const item of sale.items) {
-                const category = productCategoryMap[item.id];
-                if (category) {
-                    acc[category] = (acc[category] || 0) + saleProfit;
+                saleSubtotal +=
+                    parseFloat(item.unit_price) * parseFloat(item.quantity); // Use parseFloat aqui também
+            }
+
+            const saleDiscount = parseFloat(sale.discount) || 0;
+
+            for (const item of sale.items) {
+                const category = productCategoryMap[item.product];
+                const costPrice = productCostMap[item.product];
+
+                if (category && costPrice !== undefined && saleSubtotal > 0) {
+                    const itemValue =
+                        parseFloat(item.unit_price) * parseFloat(item.quantity);
+                    const itemProfitBeforeDiscount =
+                        (parseFloat(item.unit_price) - costPrice) *
+                        parseFloat(item.quantity);
+                    const itemProportion = itemValue / saleSubtotal;
+                    const itemDiscountPortion = saleDiscount * itemProportion;
+                    const itemProfitAfterDiscount =
+                        itemProfitBeforeDiscount - itemDiscountPortion;
+                    acc[category] =
+                        (acc[category] || 0) + itemProfitAfterDiscount;
+                } else if (category && costPrice !== undefined) {
+                    const itemProfitAfterDiscount =
+                        (0 - costPrice) * parseFloat(item.quantity);
+                    acc[category] =
+                        (acc[category] || 0) + itemProfitAfterDiscount;
                 }
             }
 
@@ -80,7 +108,7 @@ const ProfitabilityReportPage = () => {
 
         return {
             byCategory: {
-                label: Object.keys(profitByCategory),
+                labels: Object.keys(profitByCategory),
                 datasets: [
                     {
                         label: 'Lucro por Categoria (R$)',
@@ -111,7 +139,7 @@ const ProfitabilityReportPage = () => {
         return (
             <div className="error-message">{errorSales || errorProducts}</div>
         );
-    
+
     return (
         <div className="report-page">
             <header className="page-header">
