@@ -22,18 +22,40 @@ const Sidebar = ({ isOpen, onClose }) => {
                 label: 'Dashboard',
                 icon: <FaTachometerAlt />,
             },
-            { path: '/customers', label: 'Clientes', icon: <FaUserFriends /> },
-            { path: '/sales', label: 'Vendas', icon: <FaShoppingCart /> },
-            { path: '/products', label: 'Produtos', icon: <FaBoxOpen /> },
+            { 
+                path: '/customers', 
+                label: 'Clientes', 
+                icon: <FaUserFriends /> 
+            },
+            { 
+                path: '/sales', 
+                label: 'Vendas', 
+                icon: <FaShoppingCart /> 
+            },
+            {   path: '/products', 
+                label: 'Produtos', 
+                icon: <FaBoxOpen /> },
             {
                 path: '/stock-movements',
                 label: 'Histórico de Estoque',
                 icon: <FaHistory />,
             },
-            { path: '/users', label: 'Usuários', icon: <FaUsers /> },
+            {   path: '/users', 
+                label: 'Usuários', 
+                icon: <FaUsers /> },
             {
                 path: '/reports/profitability',
                 label: 'Relatórios',
+                icon: <FaChartLine />,
+            },
+            {
+                path: '/reports/profitability',
+                label: 'CheckIn',
+                icon: <FaChartLine />,
+            },
+            {
+                path: '/reports/profitability',
+                label: 'CheckOut',
                 icon: <FaChartLine />,
             },
         ],
