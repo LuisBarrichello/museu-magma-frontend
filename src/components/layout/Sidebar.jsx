@@ -10,6 +10,7 @@ import {
     FaHistory,
     FaChartLine,
     FaUserFriends,
+    FaClipboardList,
 } from 'react-icons/fa';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -29,6 +30,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                 path: '/stock-movements',
                 label: 'Histórico de Estoque',
                 icon: <FaHistory />,
+            },
+            {
+                path: '/visitors/history',
+                label: 'Histórico de Visitas',
+                icon: <FaClipboardList />,
             },
             { path: '/users', label: 'Usuários', icon: <FaUsers /> },
             {

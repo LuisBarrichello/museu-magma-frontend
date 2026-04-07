@@ -1,0 +1,313 @@
+/* =============================================
+   ARQUIVO: src/pages/VisitorsPage/VisitHistoryPage.css
+   ============================================= */
+
+/* Container principal da página */
+.visit-history-page {
+  padding: 24px;
+  max-width: 1200px;
+}
+
+/* Cabeçalho da página: título + subtítulo */
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #f5f5f8;
+  margin: 0 0 4px 0;
+}
+
+.page-header p {
+  font-size: 0.9rem;
+  color: #d3d7e2;
+  margin: 0;
+}
+
+/* Barra de busca */
+.search-bar-container {
+  margin-bottom: 20px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  max-width: 400px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #183886;
+  font-size: 1rem;
+  pointer-events: none; /* ícone não bloqueia o clique */
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 12px 10px 38px; /* espaço para o ícone à esquerda */
+  border: 1px solid #7996c2;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  background: #fff;
+  color: #020202;
+}
+
+.search-input:focus {
+  border-color: #4f46e5; /* destaca a borda quando o campo está ativo */
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Card que envolve a tabela */
+.table-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden; /* garante que a tabela respeite o border-radius */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* Tabela */
+.visitors-table {
+  width: 100%;
+  border-collapse: collapse; /* remove espaços entre as células */
+  font-size: 0.875rem;
+}
+
+.visitors-table thead {
+  background: #f9fafb;
+}
+
+.visitors-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap; /* evita quebra de texto nos cabeçalhos */
+}
+
+.visitors-table td {
+  padding: 14px 16px;
+  color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+
+/* Efeito hover nas linhas da tabela */
+.visitors-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* Última linha sem borda */
+.visitors-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Badge de tipo de visitante (INDIVIDUAL, GROUP, etc.) */
+.badge-type {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.badge-individual {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.badge-group {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge-school {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-default {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* Texto secundário (email, telefone) */
+.text-secondary {
+  color: #6b7280;
+  font-size: 0.82rem;
+}
+
+/* Célula com nome + documento empilhados */
+.visitor-name {
+  font-weight: 500;
+  color: #111827;
+}
+
+.visitor-doc {
+  color: #6b7280;
+  font-size: 0.8rem;
+  margin-top: 2px;
+}
+
+/* Estado de carregamento */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #6b7280;
+  gap: 12px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Estado de erro */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #ef4444;
+  gap: 8px;
+  text-align: center;
+}
+
+.error-state span {
+  font-size: 2rem;
+}
+
+.btn-retry {
+  margin-top: 8px;
+  padding: 8px 20px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.2s;
+}
+
+.btn-retry:hover {
+  background: #4338ca;
+}
+
+/* Estado vazio (sem resultados) */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #9ca3af;
+  gap: 8px;
+  text-align: center;
+}
+
+.empty-state span {
+  font-size: 2.5rem;
+}
+
+/* =============================================
+   PAGINAÇÃO
+   ============================================= */
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pagination-info {
+  font-size: 0.83rem;
+  color: #6b7280;
+}
+
+.pagination-buttons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-page {
+  padding: 6px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+  color: #374151;
+  font-size: 0.83rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-page:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.btn-page:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-page.active {
+  background: #4f46e5;
+  border-color: #4f46e5;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Total de resultados */
+.results-count {
+  font-size: 0.83rem;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+/* Responsivo para telas menores */
+@media (max-width: 768px) {
+  .visit-history-page {
+    padding: 16px;
+  }
+
+  /* Esconde algumas colunas no celular */
+  .col-email,
+  .col-phone,
+  .col-notes {
+    display: none;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
