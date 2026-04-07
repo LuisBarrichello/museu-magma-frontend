@@ -16,10 +16,6 @@ import CustomersPage from './pages/CustomersPage/CustomersPage';
 import StockMovementsPage from './pages/StockMovementsPage/StockMovementsPage';
 import ProfitabilityReportPage from './pages/Reports/ProfitabilityReportPage';
 
-// ✅ Novas páginas de visitantes
-import CheckInPage from './pages/VisitorsPage/CheckInPage';
-import CheckOutPage from './pages/VisitorsPage/CheckOutPage';
-
 function App() {
     return (
         <Router>
@@ -56,12 +52,7 @@ function App() {
                             <Route path="/stock-movements" element={<StockMovementsPage />} />
                         </Route>
 
-                        {/* ✅ Visitantes — Admin e Vendedor */}
-                        <Route element={<RoleProtectedRoute allowedRoles={['ADMIN', 'SELLER']} />}>
-                            <Route path="/visitors/check-in" element={<CheckInPage />} />
-                            <Route path="/visitors/check-out" element={<CheckOutPage />} />
-                        </Route>
-
+                        
                     </Route>
 
                     <Route path="/" element={<LoginPage />} />
