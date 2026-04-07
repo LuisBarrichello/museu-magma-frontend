@@ -32,8 +32,6 @@ const Sidebar = ({ isOpen, onClose }) => {
             { path: '/customers', label: 'Clientes', icon: <FaUserFriends /> },
             { path: '/sales', label: 'Minhas Vendas', icon: <FaShoppingCart /> },
             { path: '/products', label: 'Visualizar Produtos', icon: <FaBoxOpen /> },
-            { path: '/visitors/check-in', label: 'Check-in', icon: <FaSignInAlt /> },
-            { path: '/visitors/check-out', label: 'Check-out', icon: <FaSignOutAlt /> },
         ],
         STOCKCLERK: [
             { path: '/dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
