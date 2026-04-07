@@ -1,24 +1,46 @@
 .report-page {
     animation: fadeIn 0.5s ease-in-out;
-    padding: 0.5rem;
 }
 
+/* Seções que dividem os blocos de relatório */
+.report-section {
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+/* Grid de 2 colunas para os gráficos */
 .report-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
 }
 
+/* Gráfico que ocupa a largura toda */
+.chart-full {
+    grid-column: 1 / -1;
+}
+
+/* Card individual de cada gráfico */
 .chart-container {
-    background-color: var(--color-background-light);
+    background-color: var(--color-surface);
+    border-radius: 12px;
     padding: 1.5rem;
-    border-radius: 8px;
-    border: 1px solid var(--color-border);
 }
 
 .chart-container h3 {
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 1rem;
-    color: var(--color-text);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    color: var(--color-text-primary);
 }

@@ -25,9 +25,10 @@ const Sidebar = ({ isOpen, onClose }) => {
             { path: '/products', label: 'Produtos', icon: <FaBoxOpen /> },
             { path: '/stock-movements', label: 'Histórico de Estoque', icon: <FaHistory /> },
             { path: '/users', label: 'Usuários', icon: <FaUsers /> },
-            { path: '/reports/profitability', label: 'Relatórios', icon: <FaChartLine /> },
             { path: '/visitors/check-in', label: 'Check-in', icon: <FaSignInAlt /> },
             { path: '/visitors/check-out', label: 'Check-out', icon: <FaSignOutAlt /> },
+            { path: '/reports/profitability', label: 'Relatórios', icon: <FaChartLine /> },
+
         ],
         SELLER: [
             { path: '/dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
