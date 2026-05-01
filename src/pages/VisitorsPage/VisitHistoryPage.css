@@ -2,6 +2,84 @@
     animation: fadeIn 0.5s ease-in-out;
 }
 
+/* Gráfico de Visitas (Mantido da feature do colega, mas padronizado) */
+.visit-chart-card {
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 20px 20px 12px;
+    margin-bottom: 24px;
+}
+
+.visit-chart-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px 16px;
+    margin-bottom: 6px;
+}
+
+.visit-chart-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.chart-range-toggle {
+    display: inline-flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.chart-range-toggle button {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-text);
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.chart-range-toggle button:last-child {
+    border-right: none;
+}
+
+.chart-range-toggle button:hover:not(.is-active) {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.chart-range-toggle button.is-active {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.visit-chart-subtitle {
+    margin: 0 0 16px 0;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.visit-chart-canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: min(280px, 40vh);
+    min-height: 200px;
+}
+
+.visit-chart-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+/* Estilos de Badges (Para a Tabela) */
 .badge-type {
     font-weight: 700;
 }
