@@ -1,0 +1,25 @@
+.visit-history-page {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.badge-type {
+    font-weight: 700;
+}
+
+.badge-individual {
+    color: var(--color-primary);
+}
+
+.badge-group {
+    color: var(--color-success);
+}
+
+.badge-school {
+    color: var(--color-warning);
+}
+
+.visitor-doc {
+    font-size: 0.85em;
+    opacity: 0.8;
+    margin-top: 2px;
+}

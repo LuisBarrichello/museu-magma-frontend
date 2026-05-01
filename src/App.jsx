@@ -15,6 +15,7 @@ import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
 import CustomersPage from './pages/CustomersPage/CustomersPage';
 import StockMovementsPage from './pages/StockMovementsPage/StockMovementsPage';
 import ProfitabilityReportPage from './pages/Reports/ProfitabilityReportPage';
+import VisitHistoryPage from './pages/VisitorsPage/VisitHistoryPage'; // 👈 LINHA ADICIONADA
 
 function App() {
     return (
@@ -71,6 +72,11 @@ function App() {
                                 path="/reports/profitability"
                                 element={<ProfitabilityReportPage />}
                             />
+                            {/* 👇 ROTA ADICIONADA — só ADMIN pode acessar */}
+                            <Route
+                                path="/visitors/history"
+                                element={<VisitHistoryPage />}
+                            />
                         </Route>
                         <Route
                             element={
@@ -97,3 +103,4 @@ function App() {
 }
 
 export default App;
+console.log(import.meta.env.VITE_API_URL);
