@@ -11,6 +11,7 @@ import {
     FaChartLine,
     FaUserFriends,
     FaClipboardList,
+    FaMoneyBillWave,
 } from 'react-icons/fa';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -41,6 +42,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                 path: '/reports/profitability',
                 label: 'Relatórios',
                 icon: <FaChartLine />,
+            },
+            {
+                path: '/fixed-costs',
+                label: 'Custos fixos',
+                icon: <FaMoneyBillWave />,
             },
         ],
         SELLER: [
