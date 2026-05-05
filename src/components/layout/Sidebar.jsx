@@ -10,6 +10,8 @@ import {
     FaHistory,
     FaChartLine,
     FaUserFriends,
+    FaSignInAlt,
+    FaSignOutAlt,
     FaClipboardList,
     FaMoneyBillWave,
 } from 'react-icons/fa';
@@ -32,11 +34,6 @@ const Sidebar = ({ isOpen, onClose }) => {
                 label: 'Histórico de Estoque',
                 icon: <FaHistory />,
             },
-            {
-                path: '/visitors/history',
-                label: 'Histórico de Visitas',
-                icon: <FaClipboardList />,
-            },
             { path: '/users', label: 'Usuários', icon: <FaUsers /> },
             {
                 path: '/reports/profitability',
@@ -47,6 +44,21 @@ const Sidebar = ({ isOpen, onClose }) => {
                 path: '/fixed-costs',
                 label: 'Custos fixos',
                 icon: <FaMoneyBillWave />,
+            },
+            {
+                path: '/visitors/check-in',
+                label: 'Check-in',
+                icon: <FaSignInAlt />,
+            },
+            {
+                path: '/visitors/check-out',
+                label: 'Check-out',
+                icon: <FaSignOutAlt />,
+            },
+            {
+                path: '/visitors/history',
+                label: 'Histórico de Visitas',
+                icon: <FaClipboardList />,
             },
         ],
         SELLER: [
@@ -65,6 +77,16 @@ const Sidebar = ({ isOpen, onClose }) => {
                 path: '/products',
                 label: 'Visualizar Produtos',
                 icon: <FaBoxOpen />,
+            },
+            {
+                path: '/visitors/check-in',
+                label: 'Check-in',
+                icon: <FaSignInAlt />,
+            },
+            {
+                path: '/visitors/check-out',
+                label: 'Check-out',
+                icon: <FaSignOutAlt />,
             },
         ],
         STOCKCLERK: [
@@ -102,7 +124,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             <nav className="sidebar-nav">
                 <ul>
                     {linksToShow.map((link) => (
-                        <li key={link.path}>
+                        <li key={link.path + link.label}>
                             <NavLink
                                 to={link.path}
                                 className={({ isActive }) =>

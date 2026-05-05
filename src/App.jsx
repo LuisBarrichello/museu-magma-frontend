@@ -15,6 +15,8 @@ import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
 import CustomersPage from './pages/CustomersPage/CustomersPage';
 import StockMovementsPage from './pages/StockMovementsPage/StockMovementsPage';
 import ProfitabilityReportPage from './pages/Reports/ProfitabilityReportPage';
+import CheckInPage from './pages/VisitorsPage/CheckInPage';
+import CheckOutPage from './pages/VisitorsPage/CheckOutPage';
 import VisitHistoryPage from './pages/VisitorsPage/VisitHistoryPage'; 
 import FixedCostsPage from './pages/FixedCostsPage/FixedCostsPage';
 
@@ -23,51 +25,27 @@ function App() {
         <Router>
             <AuthProvider>
                 <Routes>
-                    {/* Public Route */}
+                    {/* Rotas públicas */}
                     <Route path="/login" element={<LoginPage />} />
-                    <Route
-                        path="/unauthorized"
-                        element={<UnauthorizedPage />}
-                    />
+                    <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-                    {/* Protected Routes */}
-
+                    {/* Rotas protegidas */}
                     <Route element={<MainLayout />}>
-                        <Route
-                            element={
-                                <RoleProtectedRoute
-                                    allowedRoles={[
-                                        'ADMIN',
-                                        'SELLER',
-                                        'STOCKCLERK',
-                                    ]}
-                                />
-                            }>
-                            <Route
-                                path="/dashboard"
-                                element={<DashboardPage />}
-                            />
+
+                        {/* Dashboard — todos os perfis */}
+                        <Route element={<RoleProtectedRoute allowedRoles={['ADMIN', 'SELLER', 'STOCKCLERK']} />}>
+                            <Route path="/dashboard" element={<DashboardPage />} />
                         </Route>
-                        <Route
-                            element={
-                                <RoleProtectedRoute
-                                    allowedRoles={['ADMIN', 'SELLER']}
-                                />
-                            }>
+
+                        {/* Vendas e Clientes — Admin e Vendedor */}
+                        <Route element={<RoleProtectedRoute allowedRoles={['ADMIN', 'SELLER']} />}>
                             <Route path="/sales" element={<SalesPage />} />
-                            <Route
-                                path="/sales/new"
-                                element={<NewSalePage />}
-                            />
-                            <Route
-                                path="/customers"
-                                element={<CustomersPage />}
-                            />
+                            <Route path="/sales/new" element={<NewSalePage />} />
+                            <Route path="/customers" element={<CustomersPage />} />
                         </Route>
-                        <Route
-                            element={
-                                <RoleProtectedRoute allowedRoles={['ADMIN']} />
-                            }>
+
+                        {/* Relatórios e Usuários — apenas Admin */}
+                        <Route element={<RoleProtectedRoute allowedRoles={['ADMIN']} />}>
                             <Route path="/users" element={<UsersPage />} />
                             <Route
                                 path="/reports/profitability"
@@ -82,21 +60,19 @@ function App() {
                                 element={<FixedCostsPage />}
                             />
                         </Route>
-                        <Route
-                            element={
-                                <RoleProtectedRoute
-                                    allowedRoles={['ADMIN', 'STOCKCLERK']}
-                                />
-                            }>
-                            <Route
-                                path="/products"
-                                element={<ProductsPage />}
-                            />
-                            <Route
-                                path="/stock-movements"
-                                element={<StockMovementsPage />}
-                            />
+
+                        {/* Produtos e Estoque — Admin e Estoquista */}
+                        <Route element={<RoleProtectedRoute allowedRoles={['ADMIN', 'STOCKCLERK']} />}>
+                            <Route path="/products" element={<ProductsPage />} />
+                            <Route path="/stock-movements" element={<StockMovementsPage />} />
                         </Route>
+
+                        {/* ✅ Visitantes — Admin e Vendedor */}
+                        <Route element={<RoleProtectedRoute allowedRoles={['ADMIN', 'SELLER']} />}>
+                            <Route path="/visitors/check-in" element={<CheckInPage />} />
+                            <Route path="/visitors/check-out" element={<CheckOutPage />} />
+                        </Route>
+
                     </Route>
 
                     <Route path="/" element={<LoginPage />} />
@@ -107,4 +83,3 @@ function App() {
 }
 
 export default App;
-console.log(import.meta.env.VITE_API_URL);

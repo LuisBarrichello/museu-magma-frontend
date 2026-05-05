@@ -3,12 +3,47 @@
     padding: 0.5rem;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Seções do relatório */
+.report-section {
+    margin-bottom: 2.5rem;
+}
+
+.section-title {
+    color: var(--color-text);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--color-primary);
+}
+
+/* Grid de gráficos */
 .report-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
 }
 
+/* Grid de KPIs */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Container de gráficos */
 .chart-container {
     background-color: var(--color-background-light);
     padding: 1.5rem;
@@ -21,4 +56,91 @@
     margin-top: 0;
     margin-bottom: 1rem;
     color: var(--color-text);
+}
+
+/* Container específico para gráfico de visitas */
+.visits-chart-container {
+    max-width: 100%;
+}
+
+/* Header do gráfico com filtro */
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.chart-header h3 {
+    margin: 0;
+    text-align: left;
+}
+
+/* Filtro de período */
+.period-filter {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.period-filter button {
+    padding: 0.4rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.period-filter button:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    transform: translateY(-1px);
+}
+
+.period-filter button.active {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+}
+
+/* Mensagem de erro */
+.error-message {
+    background-color: rgba(217, 83, 79, 0.2);
+    border: 1px solid var(--color-error);
+    color: var(--color-error);
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .report-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .kpi-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .chart-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .chart-header h3 {
+        text-align: center;
+        width: 100%;
+    }
+
+    .period-filter {
+        width: 100%;
+        justify-content: center;
+    }
 }
