@@ -5,19 +5,16 @@
 .checkin-container {
     display: flex;
     justify-content: center;
-    padding: 1rem 0;
 }
 
 .form-card {
     background-color: var(--color-surface);
     border-radius: 12px;
-    padding: 2rem;
     width: 100%;
     max-width: 560px;
 }
 
 .form-card h2 {
-    margin-bottom: 1.5rem;
     font-size: 1.3rem;
     color: var(--color-text-primary);
 }
@@ -31,13 +28,11 @@
 .checkin-form {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
 }
 
 .form-group label {
