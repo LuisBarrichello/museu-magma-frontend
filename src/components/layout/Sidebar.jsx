@@ -12,6 +12,8 @@ import {
     FaUserFriends,
     FaSignInAlt,
     FaSignOutAlt,
+    FaClipboardList,
+    FaMoneyBillWave,
 } from 'react-icons/fa';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -19,28 +21,86 @@ const Sidebar = ({ isOpen, onClose }) => {
 
     const navLinks = {
         ADMIN: [
-            { path: '/dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
+            {
+                path: '/dashboard',
+                label: 'Dashboard',
+                icon: <FaTachometerAlt />,
+            },
             { path: '/customers', label: 'Clientes', icon: <FaUserFriends /> },
             { path: '/sales', label: 'Vendas', icon: <FaShoppingCart /> },
             { path: '/products', label: 'Produtos', icon: <FaBoxOpen /> },
-            { path: '/stock-movements', label: 'Histórico de Estoque', icon: <FaHistory /> },
+            {
+                path: '/stock-movements',
+                label: 'Histórico de Estoque',
+                icon: <FaHistory />,
+            },
             { path: '/users', label: 'Usuários', icon: <FaUsers /> },
-            { path: '/visitors/check-in', label: 'Check-in', icon: <FaSignInAlt /> },
-            { path: '/visitors/check-out', label: 'Check-out', icon: <FaSignOutAlt /> },
-            { path: '/reports/profitability', label: 'Relatórios', icon: <FaChartLine /> },
+            {
+                path: '/reports/profitability',
+                label: 'Relatórios',
+                icon: <FaChartLine />,
+            },
+            {
+                path: '/fixed-costs',
+                label: 'Custos fixos',
+                icon: <FaMoneyBillWave />,
+            },
+            {
+                path: '/visitors/check-in',
+                label: 'Check-in',
+                icon: <FaSignInAlt />,
+            },
+            {
+                path: '/visitors/check-out',
+                label: 'Check-out',
+                icon: <FaSignOutAlt />,
+            },
+            {
+                path: '/visitors/history',
+                label: 'Histórico de Visitas',
+                icon: <FaClipboardList />,
+            },
         ],
         SELLER: [
-            { path: '/dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
+            {
+                path: '/dashboard',
+                label: 'Dashboard',
+                icon: <FaTachometerAlt />,
+            },
             { path: '/customers', label: 'Clientes', icon: <FaUserFriends /> },
-            { path: '/sales', label: 'Minhas Vendas', icon: <FaShoppingCart /> },
-            { path: '/products', label: 'Visualizar Produtos', icon: <FaBoxOpen /> },
-            { path: '/visitors/check-in', label: 'Check-in', icon: <FaSignInAlt /> },
-            { path: '/visitors/check-out', label: 'Check-out', icon: <FaSignOutAlt /> },
+            {
+                path: '/sales',
+                label: 'Minhas Vendas',
+                icon: <FaShoppingCart />,
+            },
+            {
+                path: '/products',
+                label: 'Visualizar Produtos',
+                icon: <FaBoxOpen />,
+            },
+            {
+                path: '/visitors/check-in',
+                label: 'Check-in',
+                icon: <FaSignInAlt />,
+            },
+            {
+                path: '/visitors/check-out',
+                label: 'Check-out',
+                icon: <FaSignOutAlt />,
+            },
         ],
         STOCKCLERK: [
-            { path: '/dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
+            {
+                path: '/dashboard',
+                label: 'Dashboard',
+                icon: <FaTachometerAlt />,
+            },
             { path: '/products', label: 'Produtos', icon: <FaBoxOpen /> },
-            { path: '/stock-movements', label: 'Histórico de Estoque', icon: <FaHistory /> },
+            {
+                path: '/stock-movements',
+                label: 'Histórico de Estoque',
+                icon: <FaHistory />,
+            },
         ],
     };
 
@@ -50,8 +110,14 @@ const Sidebar = ({ isOpen, onClose }) => {
         <aside className={`app-sidebar ${isOpen ? 'open' : ''}`}>
             <div className="sidebar-header">
                 <div>
-                    <img src={logo} alt="Museu Magma Logo" className="sidebar-logo" />
-                    <button className="sidebar-close-btn" onClick={onClose}>&times;</button>
+                    <img
+                        src={logo}
+                        alt="Museu Magma Logo"
+                        className="sidebar-logo"
+                    />
+                    <button className="sidebar-close-btn" onClick={onClose}>
+                        &times;
+                    </button>
                 </div>
                 <h2>Museu Magma</h2>
             </div>
@@ -61,9 +127,10 @@ const Sidebar = ({ isOpen, onClose }) => {
                         <li key={link.path + link.label}>
                             <NavLink
                                 to={link.path}
-                                className={({ isActive }) => isActive ? 'active' : ''}
-                                onClick={onClose}
-                            >
+                                className={({ isActive }) =>
+                                    isActive ? 'active' : ''
+                                }
+                                onClick={onClose}>
                                 {link.icon}
                                 <span>{link.label}</span>
                             </NavLink>

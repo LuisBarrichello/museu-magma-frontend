@@ -17,6 +17,8 @@ import StockMovementsPage from './pages/StockMovementsPage/StockMovementsPage';
 import ProfitabilityReportPage from './pages/Reports/ProfitabilityReportPage';
 import CheckInPage from './pages/VisitorsPage/CheckInPage';
 import CheckOutPage from './pages/VisitorsPage/CheckOutPage';
+import VisitHistoryPage from './pages/VisitorsPage/VisitHistoryPage'; 
+import FixedCostsPage from './pages/FixedCostsPage/FixedCostsPage';
 
 function App() {
     return (
@@ -45,7 +47,18 @@ function App() {
                         {/* Relatórios e Usuários — apenas Admin */}
                         <Route element={<RoleProtectedRoute allowedRoles={['ADMIN']} />}>
                             <Route path="/users" element={<UsersPage />} />
-                            <Route path="/reports/profitability" element={<ProfitabilityReportPage />} />
+                            <Route
+                                path="/reports/profitability"
+                                element={<ProfitabilityReportPage />}
+                            />
+                            <Route
+                                path="/visitors/history"
+                                element={<VisitHistoryPage />}
+                            />
+                            <Route
+                                path="/fixed-costs"
+                                element={<FixedCostsPage />}
+                            />
                         </Route>
 
                         {/* Produtos e Estoque — Admin e Estoquista */}
