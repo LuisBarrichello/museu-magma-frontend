@@ -290,8 +290,8 @@ export default function VisitHistoryPage() {
         const { start, end } = getRangeBounds(cfg.days);
         
         // Format dates for API (ISO 8601 format: YYYY-MM-DD)
-        const entry_date_after = start.toISOString().split('T')[0];
-        const entry_date_before = end.toISOString().split('T')[0];
+        const entryDateAfter = start.toISOString().split('T')[0];
+        const entryDateBefore = end.toISOString().split('T')[0];
         
         (async () => {
             setChartLoading(true);
@@ -303,8 +303,8 @@ export default function VisitHistoryPage() {
                     search,
                     page: 1,
                     limit: cfg.fetchLimit,
-                    entry_date_after,
-                    entry_date_before,
+                    entry_date_after: entryDateAfter,
+                    entry_date_before: entryDateBefore,
                 });
                 if (!cancelled) setChartSample(data.results ?? []);
             } catch (e) {
