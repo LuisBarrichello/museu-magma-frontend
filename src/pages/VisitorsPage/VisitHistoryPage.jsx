@@ -28,26 +28,31 @@ ChartJS.register(
 
 const ITEMS_PER_PAGE = 10;
 
+// Chart data fetch limits per range
+// Note: These limits are fallbacks. The chart now uses date range filters (entry_date_after/before)
+// to reduce payload. If the backend supports these filters, only records within the date range
+// will be fetched. Otherwise, these limits prevent excessive data transfer.
+// Ideally, the backend should provide an aggregated endpoint (e.g., /visits/stats/) for better performance.
 const CHART_RANGE = {
     week: {
         key: 'week',
         days: 7,
         label: 'Semana',
-        fetchLimit: 400,
+        fetchLimit: 200, // Reduced from 400
         title: 'Visitas por dia',
     },
     month: {
         key: 'month',
         days: 30,
         label: 'Mês',
-        fetchLimit: 800,
+        fetchLimit: 500, // Reduced from 800
         title: 'Visitas por dia',
     },
     quarter: {
         key: 'quarter',
         days: 90,
         label: 'Últimos 3 meses',
-        fetchLimit: 2000,
+        fetchLimit: 1000, // Reduced from 2000
         title: 'Visitas por mês',
     },
 };
@@ -281,15 +286,25 @@ export default function VisitHistoryPage() {
 
     useEffect(() => {
         let cancelled = false;
-        const fetchLimit = CHART_RANGE[chartRange].fetchLimit;
+        const cfg = CHART_RANGE[chartRange];
+        const { start, end } = getRangeBounds(cfg.days);
+        
+        // Format dates for API (ISO 8601 format: YYYY-MM-DD)
+        const entry_date_after = start.toISOString().split('T')[0];
+        const entry_date_before = end.toISOString().split('T')[0];
+        
         (async () => {
             setChartLoading(true);
             setChartError(null);
             try {
+                // Use date filters to reduce payload instead of fetching all records
+                // Note: If backend doesn't support date filtering, it will ignore these params
                 const data = await getVisits({
                     search,
                     page: 1,
-                    limit: fetchLimit,
+                    limit: cfg.fetchLimit,
+                    entry_date_after,
+                    entry_date_before,
                 });
                 if (!cancelled) setChartSample(data.results ?? []);
             } catch (e) {
