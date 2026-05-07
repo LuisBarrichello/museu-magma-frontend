@@ -387,7 +387,10 @@ export default function VisitHistoryPage() {
                     <h2 className="visit-chart-title">
                         {CHART_RANGE[chartRange].title}
                     </h2>
-                    <div className="chart-range-toggle" role="group">
+                    <div
+                        className="chart-range-toggle"
+                        role="group"
+                        aria-label="Período do gráfico">
                         {['week', 'month', 'quarter'].map((key) => (
                             <button
                                 key={key}
