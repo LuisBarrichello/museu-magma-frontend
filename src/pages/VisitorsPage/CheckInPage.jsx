@@ -44,7 +44,7 @@ const CheckInPage = () => {
             setTicketCode(response.data.ticket_code);
 
         } catch (err) {
-            setError('Erro ao registrar entrada. Verifique os dados e tente novamente.' + err.response?.data?.detail || '');
+            setError(`Erro ao registrar entrada. Verifique os dados e tente novamente.${err.response?.data?.detail ? ` ${err.response.data.detail}` : ''}`);
         } finally {
             setLoading(false);
         }
