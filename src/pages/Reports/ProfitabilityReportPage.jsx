@@ -44,7 +44,7 @@ const ProfitabilityReportPage = () => {
         data: visits,
         loading: loadingVisits,
         error: errorVisits,
-    } = useApi('/visits');
+    } = useApi('/visits/');
     const {
         data: analytics,
         loading: loadingAnalytics,
