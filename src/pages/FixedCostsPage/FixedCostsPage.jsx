@@ -214,13 +214,15 @@ function CategoryTable({
                 >
                     {label}
                 </h2>
-                <button
-                    type="button"
-                    className="fixed-cost-add-categ-btn"
-                    onClick={() => onAddClick(categoryId)}
-                >
-                    <FaPlus /> Adicionar custo
-                </button>
+                {categoryId !== 'all' && (
+                    <button
+                        type="button"
+                        className="fixed-cost-add-categ-btn"
+                        onClick={() => onAddClick(categoryId)}
+                    >
+                        <FaPlus /> Adicionar custo
+                    </button>
+                )}
             </div>
 
             {entries.length > 0 && (
