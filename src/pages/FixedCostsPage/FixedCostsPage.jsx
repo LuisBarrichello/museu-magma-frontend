@@ -496,9 +496,8 @@ export default function FixedCostsPage() {
 
             {error && (
                 <div className="fixed-costs-banner error">
-                    {error} Se o endpoint ainda não existir no backend, implemente
-                    <code> GET/POST/PATCH /api/v1/fixed-cost-entries/ </code> ou
-                    ajuste <code>src/services/fixedCostsService.js</code>.
+                    Não foi possível carregar os custos fixos no momento. Tente
+                    novamente em instantes.
                 </div>
             )}
             {actionError && !error && (
